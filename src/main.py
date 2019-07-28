@@ -200,8 +200,6 @@ class UartCom:
             time.sleep(0.2)
             self.control_fan_power(init=True)
             time.sleep(0.2)
-            self.control_cs_power(init=True)
-            time.sleep(0.2)
             self.check_blackout()
 
     def send_msg(self, msg):
@@ -224,7 +222,7 @@ class UartCom:
         """양액 온도, DO, pH, TDS 상태 읽기"""
         self.send_msg('\x02W1WATER?\x03\x0A\x0D')
 
-    def check_air_stauts(self):
+    def check_air_status(self):
         """실내 온도, Humid, Co2 상태 읽기"""
         self.send_msg('\x02T1TEMP??\x03\x0A\x0D')
 
@@ -458,11 +456,17 @@ class TimeUpdater(QtCore.QThread):
 class ValueUpdater(QtCore.QThread):
     def __init__(self):
         super().__init__()
-        ui.sensor_freq_apply.clicked.connect(lambda : self.sensor_timer.start())
+        ui.sensor_freq_apply.clicked.connect(manager.change_settings('sensor'))
+        ui.sensor_freq_apply.clicked.connect(lambda: self.sensor_timer.start(self.calculate_millisecond))
         self.sensor_timer = QtCore.QTimer()
         self.sensor_timer.timeout.connect(uartCom.check_air_status)
         self.sensor_timer.timeout.connect(uartCom.check_water_status)
         self.start()
+
+    def calculate_millisecond(self):
+        units = {'s': 1000, 'm': 60000, 'h': 3600000}
+        millisecond = config.settings['sensor']['freq']*units[config.settings['sensor']['unit']]
+        return millisecond
 
 
 class Manager(QtCore.QThread):
