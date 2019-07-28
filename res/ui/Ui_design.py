@@ -801,7 +801,7 @@ class Ui_MainWindow(object):
         self.humid.setChecked(True)
         self.humid.setObjectName("humid")
         self.plotWidget = PlotWidget(self.frame_16)
-        self.plotWidget.setGeometry(QtCore.QRect(20, 40, 501, 341))
+        self.plotWidget.setGeometry(QtCore.QRect(20, 45, 501, 335))
         self.plotWidget.setStyleSheet("background:transparent;\n"
 "border:transparent")
         self.plotWidget.setObjectName("plotWidget")
@@ -997,22 +997,27 @@ class Ui_MainWindow(object):
         self.sensor_freq_apply.setCheckable(True)
         self.sensor_freq_apply.setObjectName("sensor_freq_apply")
         self.sensor_freq_unit = QtWidgets.QComboBox(self.frame_9)
-        self.sensor_freq_unit.setGeometry(QtCore.QRect(125, 145, 31, 31))
+        self.sensor_freq_unit.setGeometry(QtCore.QRect(123, 145, 35, 31))
         font = QtGui.QFont()
         font.setFamily("나눔고딕")
-        font.setPointSize(11)
+        font.setPointSize(10)
         self.sensor_freq_unit.setFont(font)
         self.sensor_freq_unit.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.sensor_freq_unit.setStyleSheet("background-color:white;\n"
+        self.sensor_freq_unit.setStyleSheet("QComboBox{\n"
+"background-color:white;\n"
 "border:1px solid grey;\n"
 "selection-background-color: rgb(121, 191, 53);\n"
-"border-radius:5px")
+"border-radius:5px\n"
+"}\n"
+"QComboBox::down-arrow {\n"
+"width: 10px;\n"
+"}")
         self.sensor_freq_unit.setObjectName("sensor_freq_unit")
         self.sensor_freq_unit.addItem("")
         self.sensor_freq_unit.addItem("")
         self.sensor_freq_unit.addItem("")
         self.sensor_freq = QtWidgets.QSpinBox(self.frame_9)
-        self.sensor_freq.setGeometry(QtCore.QRect(75, 145, 41, 31))
+        self.sensor_freq.setGeometry(QtCore.QRect(73, 145, 41, 31))
         font = QtGui.QFont()
         font.setFamily("나눔고딕")
         font.setPointSize(12)
@@ -1029,6 +1034,7 @@ class Ui_MainWindow(object):
 "width: 17px;\n"
 "}")
         self.sensor_freq.setPrefix("")
+        self.sensor_freq.setMaximum(60)
         self.sensor_freq.setProperty("value", 5)
         self.sensor_freq.setObjectName("sensor_freq")
         self.line_3 = QtWidgets.QFrame(self.frame_9)
@@ -1160,7 +1166,7 @@ class Ui_MainWindow(object):
         self.server_freq_apply.setCheckable(True)
         self.server_freq_apply.setObjectName("server_freq_apply")
         self.server_freq = QtWidgets.QSpinBox(self.frame_11)
-        self.server_freq.setGeometry(QtCore.QRect(75, 145, 41, 31))
+        self.server_freq.setGeometry(QtCore.QRect(73, 145, 41, 31))
         font = QtGui.QFont()
         font.setFamily("나눔고딕")
         font.setPointSize(12)
@@ -1176,6 +1182,7 @@ class Ui_MainWindow(object):
 "QSpinBox::up-button {\n"
 "width: 17px;\n"
 "}")
+        self.server_freq.setMaximum(60)
         self.server_freq.setProperty("value", 5)
         self.server_freq.setObjectName("server_freq")
         self.label_39 = QtWidgets.QLabel(self.frame_11)
@@ -1240,10 +1247,10 @@ class Ui_MainWindow(object):
         self.server_save.setCheckable(True)
         self.server_save.setObjectName("server_save")
         self.server_freq_unit = QtWidgets.QComboBox(self.frame_11)
-        self.server_freq_unit.setGeometry(QtCore.QRect(125, 145, 31, 31))
+        self.server_freq_unit.setGeometry(QtCore.QRect(123, 145, 35, 31))
         font = QtGui.QFont()
         font.setFamily("나눔고딕")
-        font.setPointSize(11)
+        font.setPointSize(10)
         self.server_freq_unit.setFont(font)
         self.server_freq_unit.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.server_freq_unit.setStyleSheet("background-color:white;\n"
@@ -2016,9 +2023,10 @@ class Ui_MainWindow(object):
         self.connect.setText(_translate("MainWindow", "connect"))
         self.label_61.setText(_translate("MainWindow", "Freq"))
         self.sensor_freq_apply.setText(_translate("MainWindow", "apply"))
-        self.sensor_freq_unit.setItemText(0, _translate("MainWindow", "s"))
-        self.sensor_freq_unit.setItemText(1, _translate("MainWindow", "m"))
-        self.sensor_freq_unit.setItemText(2, _translate("MainWindow", "h"))
+        self.sensor_freq_unit.setCurrentText(_translate("MainWindow", "S"))
+        self.sensor_freq_unit.setItemText(0, _translate("MainWindow", "S"))
+        self.sensor_freq_unit.setItemText(1, _translate("MainWindow", "M"))
+        self.sensor_freq_unit.setItemText(2, _translate("MainWindow", "H"))
         self.label_37.setText(_translate("MainWindow", "Server"))
         self.serv_unit.setItemText(0, _translate("MainWindow", "초"))
         self.serv_unit.setItemText(1, _translate("MainWindow", "분"))
@@ -2028,9 +2036,10 @@ class Ui_MainWindow(object):
         self.label_46.setText(_translate("MainWindow", "PORT"))
         self.label_53.setText(_translate("MainWindow", "Freq"))
         self.server_save.setText(_translate("MainWindow", "save"))
-        self.server_freq_unit.setItemText(0, _translate("MainWindow", "s"))
-        self.server_freq_unit.setItemText(1, _translate("MainWindow", "m"))
-        self.server_freq_unit.setItemText(2, _translate("MainWindow", "h"))
+        self.server_freq_unit.setCurrentText(_translate("MainWindow", "S"))
+        self.server_freq_unit.setItemText(0, _translate("MainWindow", "S"))
+        self.server_freq_unit.setItemText(1, _translate("MainWindow", "M"))
+        self.server_freq_unit.setItemText(2, _translate("MainWindow", "H"))
         self.label_43.setText(_translate("MainWindow", "Culture Solution"))
         self.cs_save.setText(_translate("MainWindow", "save"))
         self.label_49.setText(_translate("MainWindow", "Act"))
@@ -2064,7 +2073,6 @@ class Ui_MainWindow(object):
         self.settings_button.setText(_translate("MainWindow", "Setting"))
 
 from pyqtgraph import PlotWidget
-
 from . import resources_rc
 
 if __name__ == "__main__":
@@ -2075,3 +2083,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
