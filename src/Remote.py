@@ -64,21 +64,9 @@ class RcvParser(QtCore.QObject):
         else:
             self.send_msg(info)
 
-    def send_humid(self, info):
-        if info[3] == 'S':
-            self.send_msg('\x02MH1FO\x03\x0A\x0D')
-        else:
-            self.send_msg(info)
-
     def send_fan(self, info):
         if info[3] == 'S':
             self.send_msg('\x02MW1FO\x03\x0A\x0D')
-        else:
-            self.send_msg(info)
-
-    def send_dryer(self, info):
-        if info[3] == 'S':
-            self.send_msg('\x02MD1FO\x03\x0A\x0D')
         else:
             self.send_msg(info)
 

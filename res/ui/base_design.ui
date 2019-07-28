@@ -3177,7 +3177,7 @@ border-radius:10px</string>
       <widget class="QFrame" name="frame_2">
        <property name="geometry">
         <rect>
-         <x>11</x>
+         <x>363</x>
          <y>10</y>
          <width>167</width>
          <height>181</height>
@@ -3755,7 +3755,7 @@ border:transparent</string>
       <widget class="QFrame" name="frame_4">
        <property name="geometry">
         <rect>
-         <x>363</x>
+         <x>11</x>
          <y>10</y>
          <width>167</width>
          <height>181</height>

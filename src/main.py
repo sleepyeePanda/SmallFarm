@@ -32,12 +32,18 @@ class UartCom:
         ui.cs_switch.pressed.connect(partial(self.control_cs_power, init=False))
         ui.blackout_check_button.pressed.connect(partial(self.check_blackout))
 
+        # fan 자동 제어
+        self.fan_freq_timer = QtCore.QTimer()
+        self.fan_freq_timer.timeout.connect(partial(self.control_fan_power, order=True))
+        ui.fan_auto.toggled.connect(lambda x: self.fan_freq_timer.start(config.settings['fan']['freq_hour']*3600000)
+                                    if x else self.stop_timers('fan'))
+        # cs 자동 제어
+        self.cs_freq_timer = QtCore.QTimer()
+        self.cs_freq_timer.timeout.connect(partial(self.control_cs_power, order=True))
+        ui.cs_auto.toggled.connect(lambda x: self.cs_freq_timer.start(config.settings['cs']['freq_hour']*3600000)
+                                   if x else self.stop_timers('cs'))
+
         self.uart = None
-        self.run_time = None
-        self.run_timer = None
-        self.humid_act_timer = None
-        self.humid_freq_timer = None
-        self.progress_timer = None
         self.isLinux = False
         self.remote = None
         self.local = None
@@ -151,9 +157,23 @@ class UartCom:
             ui.connect.setEnabled(True)
             ui.disconnect.setChecked(False)
 
+    def stop_timers(self, actuator):
+        if actuator == 'fan':
+            if self.fan_act_timer:
+                self.fan_act_timer.stop()
+            if self.fan_freq_timer:
+                self.fan_freq_timer.stop()
+        elif actuator == 'cs':
+            if self.cs_act_timer:
+                self.cs_act_timer.stop()
+            if self.cs_freq_timer:
+                self.cs_freq_timer.stop()
+
     def reset(self):
         """작동기 상태 초기화"""
-        self.stop()
+        self.stop_timers('fan')
+        self.stop_timers('cs')
+
         config.status = {'heater': False, 'humidifier': False, 'fan': False, 'led': False, 'dryer': False}
         for actuator in [ui.led_switch, ui.fan_switch, ui.cs_switch]:
             actuator.setChecked(False)
@@ -177,11 +197,11 @@ class UartCom:
         """작동기 최초 상태 읽기"""
         if self.uart is not None:
             self.control_led_power(init=True)
-            time.sleep(0.15)
+            time.sleep(0.2)
             self.control_fan_power(init=True)
-            time.sleep(0.15)
+            time.sleep(0.2)
             self.control_cs_power(init=True)
-            time.sleep(0.15)
+            time.sleep(0.2)
             self.check_blackout()
 
     def send_msg(self, msg):
@@ -200,50 +220,56 @@ class UartCom:
             print('Not Connected')
             return False
 
-    def check_status(self):
-        """모니터링 요소 상태 읽기"""
-        self.send_msg('\x02S1TEMP?\x03\x0A\x0D')
+    def check_water_status(self):
+        """양액 온도, DO, pH, TDS 상태 읽기"""
+        self.send_msg('\x02W1WATER?\x03\x0A\x0D')
 
-    def control_led_power(self, init=False):
+    def check_air_stauts(self):
+        """실내 온도, Humid, Co2 상태 읽기"""
+        self.send_msg('\x02T1TEMP??\x03\x0A\x0D')
+
+    def control_led_power(self, init=False, order=None):
         """led 작동 제어"""
-        msgs = {True: '\x02MF1FX\x03\x0A\x0D', False: '\x02MF1FO\x03\x0A\x0D'}
-        self.send_msg('\x02MF1ST\x03\x0A\x0D' if init else msgs[config.actuator_status['led']])
+        msgs = {True: '\x02L010555R555G555B555\x03\x0A\x0D', False: '\x02L011555R555G555B555\x03\x0A\x0D'}
+        if order:
+            self.send_msg(msgs[not order])
+        else:
+            self.send_msg('\x02L01ST\x03\x0A\x0D' if init else msgs[config.actuator_status['led']])
 
     def control_fan_power(self, init=False, order=None):
         """fan 작동 제어"""
-        msgs = {True: '\x02MH1FX\x03\x0A\x0D', False: '\x02MH1FO\x03\x0A\x0D'}
-        if order == False:
+        msgs = {True: '\x02F1FX\x03\x0A\x0D', False: '\x02F1FO\x03\x0A\x0D'}
+        if order:
             msg = msgs[False]
             self.fan_act_timer = QtCore.QTimer()
             self.fan_act_timer.setSingleShot(True)
-            self.fan_act_timer.timeout.connect(lambda: self.control_fan_power(order=True))
+            self.fan_act_timer.timeout.connect(lambda: self.control_fan_power(order=False))
             # hours*60*60*1000msec
             # minutes*60*1000msec
-            self.humid_act_timer.start(config.settings['fan']['act_min'][0]*60000)
-            self.humid_freq_timer.start(config.settings['fan']['freq_hour'][0]*3600000)
-        elif order == True:
+            self.fan_act_timer.start(config.settings['fan']['act_min']*60000)
+            self.fan_freq_timer.start(config.settings['fan']['freq_hour']*3600000)
+        elif not order:
             msg = msgs[True]
         else:
             msg = msgs[config.actuator_status['fan']]
-        self.send_msg('\x02MH1ST\x03\x0A\x0D' if init else msg)
+        self.send_msg('\x02F1ST\x03\x0A\x0D' if init else msg)
 
     def control_cs_power(self, init=False, order=None):
         """cs 작동 제어"""
-        msgs = {True: '\x02MH1FX\x03\x0A\x0D', False: '\x02MH1FO\x03\x0A\x0D'}
-        if order == False:
+        msgs = {True: '\x02NSTOP\x03\x0A\x0D', False: '\x02NSTART\x03\x0A\x0D'}
+        if order:
             msg = msgs[False]
             self.cs_act_timer = QtCore.QTimer()
             self.cs_act_timer.setSingleShot(True)
-            self.cs_act_timer.timeout.connect(lambda: self.control_cs_power(order=True))
+            self.cs_act_timer.timeout.connect(lambda: self.control_cs_power(order=False))
             # 1 hours = 60*60*1000 msec
             # 1 minutes = 60*1000 msec
             self.cs_act_timer.start(config.actuator_status['cs']['act_min'][0]*60000)
-            self.cs_freq_timer.start(config.actuator_status['cs']['freq_hour'][0]*3600000)
-        elif order == True:
+        elif not order:
             msg = msgs[True]
         else:
             msg = msgs[config.actuator_status['cs']]
-        self.send_msg('\x02MH1ST\x03\x0A\x0D' if init else msg)
+        self.send_msg(msg)
 
     def check_blackout(self):
         pass
@@ -289,7 +315,7 @@ class RcvParser(QtCore.QObject):
         """수신 데이터 파싱"""
         info = pkt.strip('\x02\x03\n\r')
         print('local: data parsed', info)
-        cmd = info[0:2]
+        cmd = info[0]
         try:
             func = self.protocol.get(cmd)
             print('local func: ', cmd, func)
@@ -297,8 +323,8 @@ class RcvParser(QtCore.QObject):
         except Exception as e:
             print(str(e))
 
-    def rcv_status(self, info):
-        """모니터링 요소 상태 파싱
+    def rcv_air_status(self, info):
+        """실내 온도, Humid, CO2 상태 파싱
            파싱 예외 발생 시 이전 상태 데이터 사용"""
         config.last_sensing = datetime.datetime.now().strftime('%H : %M : %S')
         try:
@@ -316,12 +342,42 @@ class RcvParser(QtCore.QObject):
         except Exception as e:
             print(str(e))
             co2 = config.co2[-1]
-        # 모니터링 요소 상태 업데이트
+        # 실내 온도, Humid, CO2 상태 업데이트
         self.updateStateSignal.emit()
         # 그래프 업데이트
         if ui.stackedWidget.currentIndex() == 1:
             self.updateGraphSignal.emit(True)
-        # 모니터링 요소 상태 데이터 추가
+        # 실내 온도, Humid, CO2 상태 데이터 추가
+        for data, status in zip([config.temp, config.humid, config.co2], [temp, humid, co2]):
+            data.append(status)
+            data.pop(0)
+
+
+    def rcv_water_status(self, info):
+        """양액 온도, DO, pH, TDS 상태 파싱
+           파싱 예외 발생 시 이전 상태 데이터 사용"""
+        config.last_sensing = datetime.datetime.now().strftime('%H : %M : %S')
+        try:
+            temp = float(info[3:8])
+        except Exception as e:
+            print(str(e))
+            temp = config.temp[-1]
+        try:
+            humid = float(info[9:11])
+        except Exception as e:
+            print(str(e))
+            humid = config.humid[-1]
+        try:
+            co2 = float(info[12:16])
+        except Exception as e:
+            print(str(e))
+            co2 = config.co2[-1]
+        # 실내 온도, Humid, CO2 상태 업데이트
+        self.updateStateSignal.emit()
+        # 그래프 업데이트
+        if ui.stackedWidget.currentIndex() == 1:
+            self.updateGraphSignal.emit(True)
+        # 실내 온도, Humid, CO2 상태 데이터 추가
         for data, status in zip([config.temp, config.humid, config.co2], [temp, humid, co2]):
             data.append(status)
             data.pop(0)
@@ -356,31 +412,47 @@ class RcvParser(QtCore.QObject):
     def rcv_blackout_check(self, info):
         """정전 여부 데이터 파싱"""
         try:
-            if info[4]=='O':
+            if info[4] == 'O':
                 manager.alertSignal.emit('정전이 발생하였습니다.')
         except Exception as e:
             print(str(e))
 
     def init_protocol(self):
-        self.protocol = {'S1': self.rcv_status,
-                         'MF': self.rcv_led,
-                         'MW': self.rcv_fan,
-                         'MD': self.rcv_cs,
-                         'ML': self.rcv_blackout_check}
+        self.protocol = {'T': self.rcv_air_status,
+                         'W': self.rcv_water_status,
+                         'L': self.rcv_led,
+                         'F': self.rcv_fan,
+                         'N': self.rcv_cs,
+                         '': self.rcv_blackout_check}
 
 
 class TimeUpdater(QtCore.QThread):
     def __init__(self):
         super().__init__()
         self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.change_time)
+        self.timer.timeout.connect(self.change_and_check_led_time)
         self.timer.start(1000)
         self.start()
 
-    def change_time(self):
+    def change_and_check_led_time(self):
+        """현재 시각 변경 및 led 자동 제어"""
         date_time = QtCore.QDateTime.currentDateTime()
         ui.cur_time.setText(date_time.toString('hh  mm  ss'))
         ui.cur_date.setText(date_time.toString('yyyy / MM / dd'))
+
+        # led 자동 제어 모드인 경우
+        if ui.led_auto.isChecked():
+            print('@@checked', date_time.toString('hh:mm'), config.settings['led']['on'], 'led is ', config.actuator_status['led'])
+            if date_time.toString('hh:mm') == config.settings['led']['on'] \
+                    and not config.actuator_status['led']:
+                print('@@led on')
+                uartCom.control_led_power(order=True)
+            elif date_time.toString('hh:mm') == config.settings['led']['off']\
+                    and config.actuator_status['led']:
+                print('@@led off')
+                uartCom.control_led_power(order=False)
+            else:
+                print("@@NO")
 
 
 class ValueUpdater(QtCore.QThread):
@@ -388,7 +460,8 @@ class ValueUpdater(QtCore.QThread):
         super().__init__()
         ui.sensor_freq_apply.clicked.connect(lambda : self.sensor_timer.start())
         self.sensor_timer = QtCore.QTimer()
-        self.sensor_timer.timeout.connect(uartCom.check_status)
+        self.sensor_timer.timeout.connect(uartCom.check_air_status)
+        self.sensor_timer.timeout.connect(uartCom.check_water_status)
         self.start()
 
 
@@ -409,6 +482,13 @@ class Manager(QtCore.QThread):
         # 그래프 조작
         for button in [ui.temp, ui.humid, ui.co2, ui.day, ui.week, ui.month]:
             button.clicked.connect(self.update_graph)
+
+        # ui.sensor_freq_apply
+        # ui.server_freq_apply
+        ui.server_save.pressed.connect(partial(self.change_settings, 'server'))
+        ui.cs_save.pressed.connect(partial(self.change_settings, 'cs'))
+        ui.fan_save.pressed.connect(partial(self.change_settings, 'fan'))
+        ui.led_save.pressed.connect(partial(self.change_settings, 'led'))
 
         # initializing
         self.update_settings()
@@ -437,8 +517,8 @@ class Manager(QtCore.QThread):
         ui.fan_act_min.setValue(config.settings['fan']['act_min'])
 
         # led 제어 설정
-        ui.led_on_at.setTime(QtCore.QTime.fromString(config.settings['led']['off'], 'hh:mm'))
-        ui.led_off_at.setTime(QtCore.QTime.fromString(config.settings['led']['on'], 'hh:mm'))
+        ui.led_on_at.setTime(QtCore.QTime.fromString(config.settings['led']['on'], 'hh:mm'))
+        ui.led_off_at.setTime(QtCore.QTime.fromString(config.settings['led']['off'], 'hh:mm'))
 
     def alert(self, message):
         """ 알림 메시지창 생성 """
@@ -480,15 +560,21 @@ class Manager(QtCore.QThread):
         if ui.co2.isChecked():
             co2_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
 
-    def change_settings(self):
+    def change_settings(self, element=None):
         """설정 변경"""
-        config.settings['sensor'].update({'freq': ui.sensor_freq.value(), 'unit':ui.sensor_freq_unit.currentText()})
-        config.settings['server'].update({'ip': ''.join([ui.ip1, ui.ip2, ui.ip3, ui.ip4]), 'port': ui.port.text(),
-                                          'freq': ui.sensor_freq.value(), 'unit': ui.sensor_freq_unit.currentText()})
-        config.settings['cs'].update({'freq_hour': ui.cs_freq_hour.value(), 'act_min': ui.cs_act_min.value()})
-        config.settings['fan'].update({'freq_hour': ui.fan_freq_hour.value(), 'act_min': ui.fan_act_min.currentText()})
-        config.settings['led'].update({'on': ui.led_on_at.time().toString('HH:mm'),
-                                       'off': ui.led_off_at.time().toString('HH:mm')})
+        if element == 'sensor':
+            config.settings['sensor'].update({'freq': ui.sensor_freq.value(), 'unit':ui.sensor_freq_unit.currentText()})
+        elif element == 'server':
+            config.settings['server'].update({'ip': ''.join([ui.ip1, ui.ip2, ui.ip3, ui.ip4]), 'port': ui.port.text(),
+                                              'freq': ui.sensor_freq.value(), 'unit': ui.sensor_freq_unit.currentText()})
+        elif element == 'led':
+            config.settings['led'].update({'on': ui.led_on_at.time().toString('HH:mm'),
+                                           'off': ui.led_off_at.time().toString('HH:mm')})
+        elif element == 'fan':
+            config.settings['fan'].update({'freq_hour': ui.fan_freq_hour.value(), 'act_min': ui.fan_act_min.value()})
+        elif element == 'cs':
+            config.settings['cs'].update({'freq_hour': ui.cs_freq_hour.value(), 'act_min': ui.cs_act_min.value()})
+
         self.update_settings()
 
 
@@ -503,6 +589,7 @@ def save_settings():
     """설정 저장"""
     with open('../res/preference/saved_settings.json', 'w') as file:
         json.dump({'element': config.settings}, file, indent=4)
+    print('saved settings')
 
 
 def update_views(temp_view, main_view, co2_view):
@@ -512,6 +599,7 @@ def update_views(temp_view, main_view, co2_view):
 
 if __name__ == '__main__':
     import sys
+    # 그래프 페이지의 그래프 초기 설정
     pg.setConfigOptions(foreground='w', background=pg.mkColor(40, 40, 40), antialias=True)
 
     app = QtWidgets.QApplication(sys.argv)
@@ -524,6 +612,7 @@ if __name__ == '__main__':
     temp_axis = pg.AxisItem('left')
     temp_axis.tickFont = font11
     temp_view = pg.ViewBox()
+    temp_view.setLimits(yMin=0, yMax=100)
 
     layout = pg.GraphicsLayout()
     ui.plotWidget.setCentralWidget(layout)
@@ -532,10 +621,11 @@ if __name__ == '__main__':
 
     plotItem = pg.PlotItem()
     plotItem.getAxis('left').tickFont = font11
-    plotItem.getAxis('left').setWidth(60)
-    plotItem.getAxis('bottom').tickFont = QtGui.QFont('나눔스퀘어', 11)
-    plotItem.showGrid(True, True, 0.5)
-    # main_view is humid_view
+    plotItem.getAxis('left').setWidth(30)
+    plotItem.getAxis('bottom').setHeight(30)
+    plotItem.getAxis('bottom').tickFont = font11
+    plotItem.showGrid(True, True, 0.4)
+    # main_view는 humid_view와 동일
     main_view = plotItem.vb
     main_view.setLimits(yMin=0, yMax=100)
     layout.addItem(plotItem, row=2, col=2, rowspan=1, colspan=1)
@@ -543,16 +633,19 @@ if __name__ == '__main__':
     layout.scene().addItem(temp_view)
     temp_axis.linkToView(temp_view)
     temp_view.setXLink(main_view)
-    temp_axis.setWidth(60)
+    temp_axis.setWidth(30)
+    temp_axis.setHeight(300)
 
     co2_view = pg.ViewBox()
+    ##
+    co2_view.setLimits(yMin=0, yMax=2000)
     co2_axis = pg.AxisItem('right')
     co2_axis.tickFont = font11
     plotItem.layout.addItem(co2_axis, 2, 3)
     plotItem.scene().addItem(co2_view)
     co2_axis.linkToView(co2_view)
     co2_view.setXLink(plotItem)
-    co2_axis.setWidth(80)
+    co2_axis.setWidth(40)
 
     main_view.sigResized.connect(lambda: update_views(temp_view, main_view, co2_view))
 

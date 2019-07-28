@@ -15,12 +15,12 @@
             "act_min": 0
         },
         "fan": {
-            "freq_hour": 0,
-            "act_min": 0
+            "freq_hour": 1,
+            "act_min": 1
         },
         "led": {
-            "on": "00:00",
-            "off": "12:00"
+            "on": "21:42",
+            "off": "21:43"
         }
     }
 }
