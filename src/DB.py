@@ -1,0 +1,1 @@
+INSERT_DATA = 'INSERT INTO data(time, temperature, humidity, co2) VALUES(?, ?, ?, ?)'

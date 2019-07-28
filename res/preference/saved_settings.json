@@ -1,0 +1,26 @@
+{
+    "element": {
+        "sensor": {
+            "freq": 0,
+            "unit": "s"
+        },
+        "server": {
+            "ip": "0.0.0.0",
+            "port": "0",
+            "freq": 0,
+            "unit": "s"
+        },
+        "cs": {
+            "freq_hour": 0,
+            "act_min": 0
+        },
+        "fan": {
+            "freq_hour": 0,
+            "act_min": 0
+        },
+        "led": {
+            "on": "00:00",
+            "off": "12:00"
+        }
+    }
+}
