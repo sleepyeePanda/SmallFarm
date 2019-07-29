@@ -13,9 +13,10 @@ import serial_asyncio
 import sys
 sys.path.append('../')
 
-import Remote
 from res.ui.Ui_design import Ui_MainWindow
 from res.preference import config
+
+__status__ = '2019.7.29'
 
 
 class UartCom:
@@ -117,26 +118,17 @@ class UartCom:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
             if self.isLinux:
-                self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), 'USB1',
+                self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), com_no,
                                                                      baudrate=115200)
-                self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'USB2',
-                                                                      baudrate=115200)
                 print(com_no+' connected')
             else:
                 try:
-                    self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), 'COM1',
+                    self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), com_no,
                                                                          baudrate=115200)
-                    print('COM1 connected')
-                except Exception as e:
-                    print(str(e))
-                try:
-                    self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'COM2',
-                                                                          baudrate=115200)
-                    print('COM2 connected')
+                    print(com_no + ' connected')
                 except Exception as e:
                     print(str(e))
 
-            self.loop.run_until_complete(self.remote)
             self.loop.run_until_complete(self.local)
 
             self.thread = Thread(target=self.run, args=(self.loop,))
