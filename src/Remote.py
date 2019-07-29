@@ -32,10 +32,9 @@ class RcvParser(QtCore.QObject):
     def parsing(self, pkt):
         self.info = pkt.strip('\x02\x03\n\r')
         print('remote: data parsed', self.info)
-        cmd = self.info[0:2]
+        cmd = self.info[0]
         try:
             func = self.protocol.get(cmd)
-            print('remote func :', cmd, func)
             return func(self.info)
         except Exception as e:
             print(str(e))
@@ -52,35 +51,34 @@ class RcvParser(QtCore.QObject):
         else:
             print('Remote Not Connected')
 
-    def send_state(self, info):
-        temp = round(random.uniform(10.0, 99.9), 1)
+    def send_air_status(self, info):
+        air_temp = round(random.uniform(10.0, 99.9), 1)
         humid = random.randrange(10, 99)
         co2 = random.randrange(1000, 2000)
-        self.send_msg('\x02S1T+'+str(temp)+'H'+str(humid)+'C'+str(co2)+'I000\x03\x0A\x0D')
+        self.send_msg('\x02T1T+'+str(air_temp)+'H'+str(humid)+'C'+str(co2)+'I000\x03\x0A\x0D')
 
-    def send_heater(self, info):
-        if info[3] == 'S':
-            self.send_msg('\x02MF1FO\x03\x0A\x0D')
-        else:
-            self.send_msg(info)
+    def send_water_status(self, info):
+        water_temp = round(random.uniform(10.0, 99.9), 1)
+        do = round(random.uniform(10.0, 99.0),  1)
+        ph = round(random.uniform(10.0, 14.0), 1)
+        tds = random.randrange(1000, 2000)
+        self.send_msg('\x02W1T+' + str(water_temp) + 'D' + str(do) + 'P' + str(ph) + 'T' + str(tds) + '\x03\x0A\x0D')
 
     def send_fan(self, info):
-        if info[3] == 'S':
-            self.send_msg('\x02MW1FO\x03\x0A\x0D')
+        if info[2] == 'S':
+            self.send_msg('\x02F1FO\x03\x0A\x0D')
         else:
             self.send_msg(info)
 
     def send_led(self, info):
         if info[3] == 'S':
-            self.send_msg('\x02ML1FO\x03\x0A\x0D')
+            self.send_msg('\x02L011555R555G555B555\x03\x0A\x0D')
         else:
             self.send_msg(info)
 
     def init_protocol(self):
-        self.protocol = {'S1': self.send_state,
-                         'MF': self.send_heater,
-                         'MH': self.send_humid,
-                         'MW': self.send_fan,
-                         'ML': self.send_led,
-                         'MD': self.send_dryer}
+        self.protocol = {'T': self.send_air_status,
+                         'W': self.send_water_status,
+                         'L': self.send_led,
+                         'F': self.send_fan}
 

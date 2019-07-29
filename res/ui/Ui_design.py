@@ -958,6 +958,13 @@ class Ui_MainWindow(object):
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
 "}\n"
+"QPushButton:checked{\n"
+"border-radius : 15px;\n"
+"border : 2px solid rgb(130,255,75);\n"
+"border:transparent;\n"
+"background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
+"color:white;\n"
+"}\n"
 "")
         self.connect.setCheckable(True)
         self.connect.setObjectName("connect")
@@ -1275,7 +1282,7 @@ class Ui_MainWindow(object):
         self.frame_15.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_15.setObjectName("frame_15")
         self.frame_2 = QtWidgets.QFrame(self.frame_15)
-        self.frame_2.setGeometry(QtCore.QRect(11, 10, 167, 181))
+        self.frame_2.setGeometry(QtCore.QRect(363, 10, 167, 181))
         self.frame_2.setStyleSheet("background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 161));\n"
 "border:1px solid rgb(121,191,53);\n"
 "border-radius : 10px")
@@ -1555,7 +1562,7 @@ class Ui_MainWindow(object):
         self.label_58.setAlignment(QtCore.Qt.AlignCenter)
         self.label_58.setObjectName("label_58")
         self.frame_4 = QtWidgets.QFrame(self.frame_15)
-        self.frame_4.setGeometry(QtCore.QRect(363, 10, 167, 181))
+        self.frame_4.setGeometry(QtCore.QRect(11, 10, 167, 181))
         self.frame_4.setStyleSheet("background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 161));\n"
 "border:1px solid rgb(121,191,53);\n"
 "border-radius : 10px")
@@ -1707,7 +1714,7 @@ class Ui_MainWindow(object):
         self.label_28.setText("")
         self.label_28.setObjectName("label_28")
         self.time_h_2 = QtWidgets.QLabel(self.frame)
-        self.time_h_2.setGeometry(QtCore.QRect(70, 28, 21, 41))
+        self.time_h_2.setGeometry(QtCore.QRect(73, 28, 21, 41))
         font = QtGui.QFont()
         font.setFamily("나눔스퀘어라운드 Bold")
         font.setPointSize(26)
@@ -1718,7 +1725,7 @@ class Ui_MainWindow(object):
         self.time_h_2.setAlignment(QtCore.Qt.AlignCenter)
         self.time_h_2.setObjectName("time_h_2")
         self.time_h_3 = QtWidgets.QLabel(self.frame)
-        self.time_h_3.setGeometry(QtCore.QRect(130, 28, 21, 41))
+        self.time_h_3.setGeometry(QtCore.QRect(133, 28, 21, 41))
         font = QtGui.QFont()
         font.setFamily("나눔스퀘어라운드 Bold")
         font.setPointSize(26)
@@ -1793,40 +1800,46 @@ class Ui_MainWindow(object):
 "background:transparent;\n"
 "border:transparent;")
         self.led_auto.setObjectName("led_auto")
-        self.fan_switch = QtWidgets.QPushButton(self.frame_25)
-        self.fan_switch.setGeometry(QtCore.QRect(110, 50, 85, 85))
-        self.fan_switch.setStyleSheet("QPushButton{background:transparent;\n"
+        self.fan_switch_image = QtWidgets.QPushButton(self.frame_25)
+        self.fan_switch_image.setGeometry(QtCore.QRect(110, 50, 85, 85))
+        self.fan_switch_image.setStyleSheet("QPushButton{background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "image: url(:/img/resources/fan_off.png);\n"
 "}\n"
 "QPushButton:checked{background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "image: url(:/img/resources/fan_on.png);}")
-        self.fan_switch.setText("")
-        self.fan_switch.setCheckable(True)
-        self.fan_switch.setObjectName("fan_switch")
-        self.led_switch = QtWidgets.QPushButton(self.frame_25)
-        self.led_switch.setGeometry(QtCore.QRect(15, 50, 85, 85))
-        self.led_switch.setStyleSheet("QPushButton{\n"
+        self.fan_switch_image.setText("")
+        self.fan_switch_image.setCheckable(True)
+        self.fan_switch_image.setObjectName("fan_switch_image")
+        self.led_switch_image = QtWidgets.QPushButton(self.frame_25)
+        self.led_switch_image.setGeometry(QtCore.QRect(15, 50, 85, 85))
+        self.led_switch_image.setStyleSheet("QPushButton{\n"
 "image: url(:/img/resources/light_off.png);\n"
 "background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "}\n"
 "QPushButton:checked{\n"
 "image: url(:/img/resources/light_on.png);\n"
 "background:transparent;\n"
-"border:transparent;}")
-        self.led_switch.setText("")
-        self.led_switch.setCheckable(True)
-        self.led_switch.setObjectName("led_switch")
+"border:transparent;\n"
+"border-radius:42px;}")
+        self.led_switch_image.setText("")
+        self.led_switch_image.setCheckable(True)
+        self.led_switch_image.setObjectName("led_switch_image")
         self.cs_switch = QtWidgets.QPushButton(self.frame_25)
         self.cs_switch.setGeometry(QtCore.QRect(15, 175, 85, 85))
         self.cs_switch.setStyleSheet("QPushButton{background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "image: url(:/img/resources/nut_off.png);\n"
 "}\n"
 "QPushButton:checked{background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "image:url(:/img/resources/nut_on.png);}")
         self.cs_switch.setText("")
         self.cs_switch.setCheckable(True)
@@ -1859,10 +1872,12 @@ class Ui_MainWindow(object):
         self.blackout_check_button.setGeometry(QtCore.QRect(110, 175, 85, 85))
         self.blackout_check_button.setStyleSheet("QPushButton{background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "image: url(:/img/resources/elec_off.png);\n"
 "}\n"
 "QPushButton:pressed{background:transparent;\n"
 "border:transparent;\n"
+"border-radius:42px;\n"
 "image:url(:/img/resources/elec_on.png);}")
         self.blackout_check_button.setText("")
         self.blackout_check_button.setCheckable(False)
@@ -1880,6 +1895,20 @@ class Ui_MainWindow(object):
 "color:rgb(60,60,60)")
         self.label_36.setAlignment(QtCore.Qt.AlignCenter)
         self.label_36.setObjectName("label_36")
+        self.led_switch = QtWidgets.QPushButton(self.frame_25)
+        self.led_switch.setGeometry(QtCore.QRect(12, 47, 91, 91))
+        self.led_switch.setStyleSheet("background:transparent;\n"
+"border:transparent;\n"
+"border-radius:40px;")
+        self.led_switch.setText("")
+        self.led_switch.setObjectName("led_switch")
+        self.fan_switch = QtWidgets.QPushButton(self.frame_25)
+        self.fan_switch.setGeometry(QtCore.QRect(107, 47, 91, 91))
+        self.fan_switch.setStyleSheet("background:transparent;\n"
+"border:transparent;\n"
+"border-radius:40px;")
+        self.fan_switch.setText("")
+        self.fan_switch.setObjectName("fan_switch")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(150, 10, 91, 51))
         font = QtGui.QFont()
@@ -2003,13 +2032,13 @@ class Ui_MainWindow(object):
         self.label_52.setText(_translate("MainWindow", "Temp"))
         self.temp_status.setText(_translate("MainWindow", "00.0"))
         self.label_62.setText(_translate("MainWindow", "Humid"))
-        self.humid_status.setText(_translate("MainWindow", "00.0"))
+        self.humid_status.setText(_translate("MainWindow", "00"))
         self.label_64.setText(_translate("MainWindow", "CO2"))
         self.co2_status.setText(_translate("MainWindow", "0000"))
         self.label_65.setText(_translate("MainWindow", "pH"))
         self.ph_status.setText(_translate("MainWindow", "00.0"))
         self.label_66.setText(_translate("MainWindow", "DO"))
-        self.do_status.setText(_translate("MainWindow", "0000"))
+        self.do_status.setText(_translate("MainWindow", "00.0"))
         self.label_67.setText(_translate("MainWindow", "TDS"))
         self.tds_status.setText(_translate("MainWindow", "0000"))
         self.co2.setText(_translate("MainWindow", "CO2"))
@@ -2057,7 +2086,7 @@ class Ui_MainWindow(object):
         self.label_60.setText(_translate("MainWindow", "Off"))
         self.label_63.setText(_translate("MainWindow", "On"))
         self.cur_date.setText(_translate("MainWindow", "2018 / 12 / 31"))
-        self.cur_time.setText(_translate("MainWindow", "00  00  00 "))
+        self.cur_time.setText(_translate("MainWindow", "00  00  00"))
         self.time_h_2.setText(_translate("MainWindow", ":"))
         self.time_h_3.setText(_translate("MainWindow", ":"))
         self.time_date_2.setText(_translate("MainWindow", "last sensing |"))

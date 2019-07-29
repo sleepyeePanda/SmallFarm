@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/preference/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/preference/saved_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/saved_settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/Ui_design.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/Ui_design.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/base_design.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/base_design.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Remote.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Remote.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,17 +22,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/preference/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
+            <state relative-caret-position="152">
+              <caret line="8" column="45" lean-forward="true" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="172" column="24" lean-forward="true" selection-start-line="172" selection-start-column="24" selection-end-line="172" selection-end-column="24" />
+            <state relative-caret-position="55">
+              <caret line="561" column="75" selection-start-line="561" selection-start-column="75" selection-end-line="561" selection-end-column="75" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -35,48 +41,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DB.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/res/ui/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/ui/Ui_design.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39406">
-              <caret line="2074" column="32" selection-start-line="2074" selection-start-column="32" selection-end-line="2074" selection-end-column="32" />
+            <state relative-caret-position="190">
+              <caret line="2102" lean-forward="true" selection-start-line="2102" selection-end-line="2102" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/ui/resources_rc.py">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-239525">
+              <caret line="11" column="17" lean-forward="true" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/preference/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/ui/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Remote.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="58" column="90" lean-forward="true" selection-start-line="58" selection-start-column="90" selection-end-line="58" selection-end-column="90" />
+            <state relative-caret-position="150">
+              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -87,7 +78,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/preference/saved_settings.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
+            <state relative-caret-position="437">
               <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
             </state>
           </provider>
@@ -104,24 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>그래프</find>
-      <find>font11</find>
-      <find>clear</find>
-      <find>ymin</find>
-      <find>timeUp</find>
-      <find>config</find>
-      <find>control_fan_power</find>
-      <find>control_led_power</find>
-      <find>manager</find>
-      <find>partial</find>
-      <find>le</find>
-      <find>led on</find>
-      <find>update_settings</find>
-      <find>rcv_led</find>
-      <find>and not</find>
-      <find>stop</find>
-      <find>fan_freq_timer</find>
-      <find>run_timer</find>
       <find>cs_freq</find>
       <find>stop_timers</find>
       <find>remote</find>
@@ -134,6 +107,24 @@
       <find>air_status</find>
       <find>36</find>
       <find>check_air</find>
+      <find>L01</find>
+      <find>fan_act_timer</find>
+      <find>valueu</find>
+      <find>rcv_wa</find>
+      <find>rcv_water</find>
+      <find>control_led_power</find>
+      <find>rcv_led</find>
+      <find>led_switch</find>
+      <find>local func</find>
+      <find>remote fun</find>
+      <find>fan_switch</find>
+      <find>fan_freq_timer</find>
+      <find>control_fan_power</find>
+      <find>cs_switch.</find>
+      <find>control_cs_power</find>
+      <find>config.actuator_status</find>
+      <find>36000</find>
+      <find>update_settings</find>
     </findStrings>
     <replaceStrings>
       <replace>update_status</replace>
@@ -156,18 +147,18 @@
         <option value="$PROJECT_DIR$/src/__init__.py" />
         <option value="$PROJECT_DIR$/res/ui/__init__.p.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/res/preference/config.py" />
-        <option value="$PROJECT_DIR$/res/ui/Ui_design.py" />
         <option value="$PROJECT_DIR$/src/DB.py" />
         <option value="$PROJECT_DIR$/res/preference/saved_settings.json" />
         <option value="$PROJECT_DIR$/src/Remote.py" />
+        <option value="$PROJECT_DIR$/res/ui/Ui_design.py" />
+        <option value="$PROJECT_DIR$/res/preference/config.py" />
         <option value="$PROJECT_DIR$/src/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="147" />
-    <option name="y" value="159" />
+    <option name="x" value="63" />
+    <option name="y" value="12" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -176,7 +167,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -198,12 +188,19 @@
             <path>
               <item name="SmallFarm" type="b2602c69:ProjectViewProjectNode" />
               <item name="SmallFarm" type="462c0819:PsiDirectoryNode" />
+              <item name="res" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SmallFarm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SmallFarm" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -283,43 +280,24 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.08556548" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.112351194" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30819672" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.40655738" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32786885" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.2782324" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3295082" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.10327869" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.5622951" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.19180328" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.08556548" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30819672" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32786885" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.2782324" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.5622951" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/res/preference/settings.py" />
@@ -329,28 +307,7 @@
     <entry file="file://$PROJECT_DIR$/res/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/preference/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DB.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/ui/Ui_design.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39406">
-          <caret line="2074" column="32" selection-start-line="2074" selection-start-column="32" selection-end-line="2074" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/ui/resources_rc.py">
+    <entry file="file://$PROJECT_DIR$/res/ui/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/__init__.py">
@@ -359,30 +316,55 @@
     <entry file="file://$PROJECT_DIR$/res/preference/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/ui/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/DB.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/preference/saved_settings.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
+        <state relative-caret-position="437">
           <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.py">
+    <entry file="file://$PROJECT_DIR$/src/Remote.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="172" column="24" lean-forward="true" selection-start-line="172" selection-start-column="24" selection-end-line="172" selection-end-column="24" />
+        <state relative-caret-position="150">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Remote.py">
+    <entry file="file://$PROJECT_DIR$/res/ui/resources_rc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="58" column="90" lean-forward="true" selection-start-line="58" selection-start-column="90" selection-end-line="58" selection-end-column="90" />
+        <state relative-caret-position="-239525">
+          <caret line="11" column="17" lean-forward="true" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/ui/Ui_design.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="2102" lean-forward="true" selection-start-line="2102" selection-end-line="2102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/preference/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="45" lean-forward="true" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="561" column="75" selection-start-line="561" selection-start-column="75" selection-end-line="561" selection-end-column="75" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
