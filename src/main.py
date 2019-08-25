@@ -22,7 +22,7 @@ __status__ = '2019.7.29'
 class UartCom:
     def __init__(self):
 
-        self.get_com()
+        #self.get_com()
 
         ui.connect.clicked.connect(self.connect_serial)
         ui.disconnect.clicked.connect(self.disconnect_serial)
@@ -53,27 +53,17 @@ class UartCom:
 
     def get_com(self, waiting=0):
         time.sleep(waiting)
-        connect_port = []
+        connectable_ports = []
         if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
             self.isLinux = True
         else:
             self.isLinux = False
-        if self.isLinux:
-            ports = self.serial_ports()
-            for port in ports:
-                if port.find('USB') > -1:
-                    connect_port.append(port)
-                    self.connect_serial()
-        else:
-            ports = self.serial_ports()
-            for port in ports:
-                if port.find('COM') > -1:
-                    connect_port.append(port)
-        print(connect_port)
-        if not connect_port:
+        connectable_ports.extend(self.serial_ports())
+        print(connectable_ports)
+        if not connectable_ports:
             manager.alertSignal.emit('통신 연결을 확인한 후 프로그램을 재실행 해주십시오')
         else:
-            for comport in connect_port:
+            for comport in connectable_ports:
                 ui.coms.addItem(comport)
 
     def serial_ports(self):
@@ -117,17 +107,12 @@ class UartCom:
         if com_no:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
-            if self.isLinux:
+            try:
                 self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), com_no,
                                                                      baudrate=115200)
-                print(com_no+' connected')
-            else:
-                try:
-                    self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), com_no,
-                                                                         baudrate=115200)
-                    print(com_no + ' connected')
-                except Exception as e:
-                    print(str(e))
+                print(com_no + ' connected')
+            except Exception as e:
+                print(str(e))
 
             self.loop.run_until_complete(self.local)
 
@@ -302,9 +287,17 @@ class RcvParser(QtCore.QObject):
         self.updateStateSignal.connect(manager.update_status)
         self.updateActuatorSignal.connect(manager.update_actuator)
         self.updateGraphSignal.connect(manager.update_graph)
-        ui.temp.pressed.connect(manager.update_graph)
+
+        # 그래프 화면의 공기 그래프
+        ui.indoor_temp.pressed.connect(manager.update_graph)
         ui.humid.pressed.connect(manager.update_graph)
         ui.co2.pressed.connect(manager.update_graph)
+
+        # 그래프 화면의 물 그래프
+        ui.cs_temp.pressed.connect(manager.update_graph)
+        ui.ph.pressed.connect(manager.update_graph)
+        ui.Do.pressed.connect(manager.update_graph)
+        ui.tds.pressed.connect(manager.update_graph)
 
     def parsing(self, pkt):
         """수신 데이터 파싱"""
@@ -465,11 +458,13 @@ class Manager(QtCore.QThread):
         ui.main_button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(0))
         ui.graph_button.clicked.connect(self.update_graph)
         ui.graph_button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(1))
+        #ui.water.clicked.connect(lambda: ui.stackedWidget_2.setCurrentIndex(0))
+        #ui.air.clicked.connect(lambda: ui.stackedWidget_2.setCurrentIndex(1))
         ui.settings_button.clicked.connect(self.update_settings)
         ui.settings_button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(2))
 
         # 그래프 조작
-        for button in [ui.temp, ui.humid, ui.co2, ui.day, ui.week, ui.month]:
+        for button in [ui.indoor_temp, ui.humid, ui.co2, ui.air_day, ui.air_week, ui.air_month]:
             button.clicked.connect(self.update_graph)
 
         # ui.sensor_freq_apply
@@ -542,7 +537,7 @@ class Manager(QtCore.QThread):
         if ui.humid.isChecked():
             main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
         temp_view.clear()
-        if ui.temp.isChecked():
+        if ui.indoor_temp.isChecked():
             temp_view.addItem(pg.PlotCurveItem(config.air_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
         co2_view.clear()
         if ui.co2.isChecked():
@@ -584,6 +579,7 @@ def save_settings():
 def update_views(temp_view, main_view, co2_view):
     temp_view.setGeometry(main_view.sceneBoundingRect())
     co2_view.setGeometry(main_view.sceneBoundingRect())
+
 
 
 if __name__ == '__main__':
