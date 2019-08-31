@@ -1,8 +1,8 @@
 <RCC>
   <qresource prefix="img">
+    <file>resources/green_arrow.png</file>
+    <file>resources/white_arrow.png</file>
     <file>resources/green_circle.png</file>
-    <file>resources/new_bg.jpg</file>
-    <file>resources/circle.png</file>
     <file>resources/elec_off.png</file>
     <file>resources/elec_on.png</file>
     <file>resources/nut_off.png</file>

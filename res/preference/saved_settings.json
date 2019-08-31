@@ -1,7 +1,7 @@
 {
     "element": {
         "sensor": {
-            "freq": 5,
+            "freq": 10,
             "unit": "S"
         },
         "server": {

@@ -50,7 +50,7 @@
      <string notr="true">background:transparent</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page_5">
      <widget class="QFrame" name="frame_13">
@@ -939,6 +939,15 @@ border-radius : 10px</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -1085,6 +1094,15 @@ border-radius : 10px</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -1228,6 +1246,15 @@ border-radius : 10px</string>
               <red>0</red>
               <green>0</green>
               <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
              </color>
             </brush>
            </colorrole>
@@ -1410,6 +1437,15 @@ color:rgb(8, 200, 206)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>131</red>
+              <green>230</green>
+              <blue>9</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -1556,6 +1592,15 @@ color:rgb(8, 200, 206)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>131</red>
+              <green>230</green>
+              <blue>9</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -1699,6 +1744,15 @@ color:rgb(8, 200, 206)</string>
               <red>0</red>
               <green>0</green>
               <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>131</red>
+              <green>230</green>
+              <blue>9</blue>
              </color>
             </brush>
            </colorrole>
@@ -1879,6 +1933,15 @@ color:rgbrgb(131, 230, 9)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>245</red>
+              <green>183</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -2025,6 +2088,15 @@ color:rgbrgb(131, 230, 9)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>245</red>
+              <green>183</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -2167,6 +2239,15 @@ color:rgbrgb(131, 230, 9)</string>
              <color alpha="255">
               <red>0</red>
               <green>0</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>245</red>
+              <green>183</green>
               <blue>0</blue>
              </color>
             </brush>
@@ -2482,6 +2563,15 @@ border:transparent;</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -2628,6 +2718,15 @@ border:transparent;</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -2771,6 +2870,15 @@ border:transparent;</string>
               <red>0</red>
               <green>0</green>
               <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
              </color>
             </brush>
            </colorrole>
@@ -2953,6 +3061,15 @@ color:rgb(8, 200, 206)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>245</red>
+              <green>183</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -3099,6 +3216,15 @@ color:rgb(8, 200, 206)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>245</red>
+              <green>183</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -3241,6 +3367,15 @@ color:rgb(8, 200, 206)</string>
              <color alpha="255">
               <red>0</red>
               <green>0</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>245</red>
+              <green>183</green>
               <blue>0</blue>
              </color>
             </brush>
@@ -3424,6 +3559,15 @@ color:rgb(245,183,0);</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>131</red>
+              <green>230</green>
+              <blue>9</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -3570,6 +3714,15 @@ color:rgb(245,183,0);</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>131</red>
+              <green>230</green>
+              <blue>9</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -3713,6 +3866,15 @@ color:rgb(245,183,0);</string>
               <red>0</red>
               <green>0</green>
               <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>131</red>
+              <green>230</green>
+              <blue>9</blue>
              </color>
             </brush>
            </colorrole>
@@ -3893,6 +4055,15 @@ color:rgbrgb(131, 230, 9)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
+             </color>
+            </brush>
+           </colorrole>
           </active>
           <inactive>
            <colorrole role="WindowText">
@@ -4039,6 +4210,15 @@ color:rgbrgb(131, 230, 9)</string>
              </color>
             </brush>
            </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
+             </color>
+            </brush>
+           </colorrole>
           </inactive>
           <disabled>
            <colorrole role="WindowText">
@@ -4182,6 +4362,15 @@ color:rgbrgb(131, 230, 9)</string>
               <red>0</red>
               <green>0</green>
               <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="NoBrush">
+             <color alpha="128">
+              <red>8</red>
+              <green>200</green>
+              <blue>206</blue>
              </color>
             </brush>
            </colorrole>
@@ -4397,7 +4586,7 @@ color:rgb(60,60,60)</string>
       <widget class="QComboBox" name="coms">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>70</x>
          <y>50</y>
          <width>91</width>
          <height>31</height>
@@ -4781,6 +4970,45 @@ width: 17px;
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="connect_2">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>52</y>
+         <width>31</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>나눔바른고딕</family>
+         <pointsize>11</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{border-radius : 13px;
+border : 2px solid rgb(121,191,53);
+color:rgb(121,191,53);
+background-color:white;
+image:url(:/img/resources/green_arrow.png)}
+QPushButton:pressed{
+border-radius : 13px;
+border : 2px solid rgb(130,255,75);
+border:transparent;
+background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));
+image:url(:/img/resources/white_arrow.png)
+}
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>

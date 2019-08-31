@@ -1,3 +1,4 @@
+# coding=utf-8
 import asyncio
 import datetime
 import glob
@@ -7,12 +8,14 @@ import serial
 from threading import Thread
 import time
 
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 import pyqtgraph as pg
 import serial_asyncio
 import sys
-sys.path.append('../')
 
+import db
+sys.path.append('../')
 from res.ui.Ui_design import Ui_MainWindow
 from res.preference import config
 
@@ -22,10 +25,8 @@ __status__ = '2019.7.29'
 class UartCom:
     def __init__(self):
 
-        #self.get_com()
-
         ui.connect.clicked.connect(self.connect_serial)
-        ui.disconnect.clicked.connect(self.disconnect_serial)
+        ui.disconnect.clicked.connect(partial(self.disconnect_serial, True))
 
         # 작동기
         ui.led_switch.pressed.connect(partial(self.control_led_power, init=False))
@@ -44,24 +45,21 @@ class UartCom:
         self.cs_freq_timer.timeout.connect(partial(self.control_cs_power, order=True))
         ui.cs_auto.toggled.connect(lambda x: self.control_cs_power(order=True) if x else self.stop_timers('cs'))
 
+        self.com_no = None
         self.uart = None
-        self.isLinux = False
-        self.remote = None
         self.local = None
         self.thread = None
-        # self.connect_serial()
 
-    def get_com(self, waiting=0):
+    def get_com(self, waiting=0, prev_com_no=None):
+        """사용 가능한 시리얼 포트 화면에 추가"""
         time.sleep(waiting)
         connectable_ports = []
-        if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            self.isLinux = True
-        else:
-            self.isLinux = False
         connectable_ports.extend(self.serial_ports())
         print(connectable_ports)
-        if not connectable_ports:
-            manager.alertSignal.emit('통신 연결을 확인한 후 프로그램을 재실행 해주십시오')
+        if prev_com_no:
+            manager.alertSignal.emit("Please press 'Retry' after checking out connection.", True)
+        elif not connectable_ports:
+            manager.alertSignal.emit('Please try again after checking out connection.', False)
         else:
             for comport in connectable_ports:
                 ui.coms.addItem(comport)
@@ -90,9 +88,6 @@ class UartCom:
     def run(self, loop):
         try:
             loop.run_forever()
-        except serial.serialutil.SerialException as se:
-            print(str(se))
-            print('serial exception occured')
         except Exception as e:
             print(str(e))
         finally:
@@ -100,39 +95,43 @@ class UartCom:
             loop.close()
         print('Closed Uart Thread!')
 
-    def connect_serial(self):
+    def handle_exception(self, loop, context):
+        self.disconnect_serial(by_user=False)
+        print(str(context))
+
+    def connect_serial(self, prev_com_no=None):
         """시리얼 연결 설정"""
-        com_no = str(ui.coms.currentText())
-        print(com_no)
-        if com_no:
+        if prev_com_no:
+            print('prev is',prev_com_no, type(prev_com_no))
+            ui.coms.addItem(prev_com_no)
+            ui.coms.setCurrentIndex(0)
+            self.com_no = prev_com_no
+        else:
+            self.com_no = str(ui.coms.currentText())
+        print(self.com_no)
+        if self.com_no:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
+            self.loop.set_exception_handler(self.handle_exception)
             try:
-                self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), com_no,
+                self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), self.com_no,
                                                                      baudrate=115200)
-                print(com_no + ' connected')
+                print(self.com_no + ' connected')
             except Exception as e:
                 print(str(e))
 
             self.loop.run_until_complete(self.local)
-
             self.thread = Thread(target=self.run, args=(self.loop,))
             self.thread.setDaemon(True)
             self.thread.start()
 
             self.initialize_actuator()
-            valueUpdater.sensor_timer.start(3000)
+            valueUpdater.sensor_timer.start(calculate_millisecond())
 
             ui.connect.setText('connected')
             ui.connect.setChecked(True)
             ui.connect.setEnabled(False)
             ui.coms.setEnabled(False)
-        else:
-            ui.connect.setChecked(False)
-            ui.connect.setText('connect')
-            ui.coms.setEnabled(True)
-            ui.connect.setEnabled(True)
-            ui.disconnect.setChecked(False)
 
     def stop_timers(self, actuator):
         if actuator == 'fan':
@@ -150,25 +149,27 @@ class UartCom:
         """작동기 상태 초기화"""
         self.stop_timers('fan')
         self.stop_timers('cs')
-
-        config.status = {'heater': False, 'humidifier': False, 'fan': False, 'led': False, 'dryer': False}
+        config.actuator_status.update({'led': False, 'fan': False})
         for actuator in [ui.led_switch_image, ui.fan_switch_image, ui.cs_switch]:
             actuator.setChecked(False)
 
-    def disconnect_serial(self):
+    def disconnect_serial(self, by_user=True):
         """시리얼 연결 해제"""
         valueUpdater.sensor_timer.stop()
         self.reset()
         if self.uart is not None:
+            self.uart.loop.stop()
             self.uart.close()
             self.uart = None
         ui.coms.clear()
         ui.connect.setChecked(False)
-        ui.connect.setText('연결')
+        ui.connect.setText('connect')
         ui.connect.setEnabled(True)
         ui.coms.setEnabled(True)
         ui.disconnect.setChecked(False)
-        self.get_com(0.3)
+        prev_com_no = None if by_user else self.com_no
+        print('prev is',prev_com_no)
+        self.get_com(0.3, prev_com_no=prev_com_no)
 
     def initialize_actuator(self):
         """작동기 최초 상태 읽기"""
@@ -188,10 +189,10 @@ class UartCom:
                 return True
             except Exception as e:
                 print(str(e))
-                manager.alertSignal.emit('통신 연결 상태를 확인해 주십시오.')
+                manager.alertSignal.emit('통신 연결 상태를 확인해 주십시오.', False)
                 return False
         else:
-            manager.alertSignal.emit('통신 연결 상태를 확인해 주십시오.')
+            manager.alertSignal.emit('통신 연결 상태를 확인해 주십시오.', False)
             print('Not Connected')
             return False
 
@@ -262,24 +263,23 @@ class UartProtocol(asyncio.Protocol):
         self.rcvParser = RcvParser()
 
     def connection_made(self, transport):
-        self.transport = transport
-        print('port opened', transport)
-        transport.serial.rts = False
         self.uartCom.uart = transport
+        print('port opened', transport)
+        self.uartCom.uart.serial.rts = False
 
     def data_received(self, data):
         message = data.decode()
         self.rcvParser.parsing(message)
 
     def connection_lost(self, exc):
-        print('COM1 port closed')
-        self.transport.loop.stop()
+        print('port closed')
 
 
 class RcvParser(QtCore.QObject):
     updateStateSignal = QtCore.pyqtSignal()
     updateActuatorSignal = QtCore.pyqtSignal()
     updateGraphSignal = QtCore.pyqtSignal(bool)
+    saveDataSignal = QtCore.pyqtSignal(str, list)
 
     def __init__(self):
         super().__init__()
@@ -287,6 +287,7 @@ class RcvParser(QtCore.QObject):
         self.updateStateSignal.connect(manager.update_status)
         self.updateActuatorSignal.connect(manager.update_actuator)
         self.updateGraphSignal.connect(manager.update_graph)
+        self.saveDataSignal.connect(db.insert_data)
 
         # 그래프 화면의 공기 그래프
         ui.indoor_temp.pressed.connect(manager.update_graph)
@@ -315,10 +316,10 @@ class RcvParser(QtCore.QObject):
            파싱 예외 발생 시 이전 상태 데이터 사용"""
         config.last_sensing = datetime.datetime.now().strftime('%H : %M : %S')
         try:
-            air_temp = float(info[3:8])
+            indoor_temp = float(info[3:8])
         except Exception as e:
             print(str(e))
-            air_temp = config.air_temp[-1]
+            indoor_temp = config.indoor_temp[-1]
         try:
             humid = int(info[9:11])
         except Exception as e:
@@ -335,19 +336,21 @@ class RcvParser(QtCore.QObject):
         if ui.stackedWidget.currentIndex() == 1:
             self.updateGraphSignal.emit(True)
         # 실내 온도, Humid, CO2 상태 데이터 추가
-        for data, status in zip([config.air_temp, config.humid, config.co2], [air_temp, humid, co2]):
+        for data, status in zip([config.indoor_temp, config.humid, config.co2], [indoor_temp, humid, co2]):
             data.append(status)
             data.pop(0)
+        # DB에 실내 온도, Humid, CO2 상태 데이터 저장
+        # self.saveDataSignal.emit('AIR', [indoor_temp, humid, co2])
 
     def rcv_water_status(self, info):
         """양액 온도, DO, pH, TDS 상태 파싱
            파싱 예외 발생 시 이전 상태 데이터 사용"""
         config.last_sensing = datetime.datetime.now().strftime('%H : %M : %S')
         try:
-            water_temp = float(info[3:8])
+            cs_temp = float(info[3:8])
         except Exception as e:
             print(str(e))
-            water_temp = config.water_temp[-1]
+            cs_temp = config.cs_temp[-1]
         try:
             do = float(info[9:13])
         except Exception as e:
@@ -369,9 +372,11 @@ class RcvParser(QtCore.QObject):
         # if ui.stackedWidget.currentIndex() == 1:
         #     self.updateGraphSignal.emit(True)
         # 양액 온도, DO, pH, TDS 상태 데이터 추가
-        for data, status in zip([config.water_temp, config.do, config.ph, config.tds], [water_temp, do, ph, tds]):
+        for data, status in zip([config.cs_temp, config.do, config.ph, config.tds], [cs_temp, do, ph, tds]):
             data.append(status)
             data.pop(0)
+        # DB에 양액 온도, DO, pH, TDS 상태 데이터 저장
+        # self.saveDataSignal.emit('WATER', [cs_temp, do, ph, tds])
 
     def rcv_led(self, info):
         """led 상태 데이터 파싱"""
@@ -395,7 +400,7 @@ class RcvParser(QtCore.QObject):
         """정전 여부 데이터 파싱"""
         try:
             if info[4] == 'O':
-                manager.alertSignal.emit('정전이 발생하였습니다.')
+                manager.alertSignal.emit('정전이 발생하였습니다.', False)
         except Exception as e:
             print(str(e))
 
@@ -434,21 +439,30 @@ class TimeUpdater(QtCore.QThread):
 class ValueUpdater(QtCore.QThread):
     def __init__(self):
         super().__init__()
-        ui.sensor_freq_apply.clicked.connect(lambda: manager.change_settings('sensor'))
-        ui.sensor_freq_apply.clicked.connect(lambda: self.sensor_timer.start(self.calculate_millisecond()))
+        ui.sensor_freq_apply.pressed.connect(self.check_freq_min_time)
         self.sensor_timer = QtCore.QTimer()
         self.sensor_timer.timeout.connect(uartCom.check_air_status)
         self.sensor_timer.timeout.connect(uartCom.check_water_status)
         self.start()
 
-    def calculate_millisecond(self):
-        units = {'S': 1000, 'M': 60000, 'H': 3600000}
-        millisecond = config.settings['sensor']['freq']*units[config.settings['sensor']['unit']]
-        return millisecond
+    def check_freq_min_time(self):
+        freq = calculate_millisecond()
+        if freq < 10000:
+            manager.alertSignal.emit('센서 최소 측정 주기는 10초입니다.', False)
+            ui.sensor_freq.setValue(10)
+            ui.sensor_freq_unit.setCurrentIndex(0)
+        manager.change_settings('sensor')
+        self.sensor_timer.start(freq)
+
+
+def calculate_millisecond():
+    units = {'S': 1000, 'M': 60000, 'H': 3600000}
+    millisecond = ui.sensor_freq.value()*units[ui.sensor_freq_unit.currentText()]
+    return millisecond
 
 
 class Manager(QtCore.QThread):
-    alertSignal = QtCore.pyqtSignal(str)
+    alertSignal = QtCore.pyqtSignal(str, bool)
 
     def __init__(self):
         super().__init__()
@@ -504,20 +518,23 @@ class Manager(QtCore.QThread):
         ui.led_on_at.setTime(QtCore.QTime.fromString(config.settings['led']['on'], 'hh:mm'))
         ui.led_off_at.setTime(QtCore.QTime.fromString(config.settings['led']['off'], 'hh:mm'))
 
-    def alert(self, message):
+    def alert(self, message, reconnect=False):
         """ 알림 메시지창 생성 """
         msgbox = QtWidgets.QMessageBox()
-        msgbox.setIcon(QtWidgets.QMessageBox.Information)
+        msgbox.setIcon(QtWidgets.QMessageBox.Warning)
         msgbox.setText(message)
-        msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        subapp = msgbox.exec_()
+        if reconnect:
+            msgbox.setStandardButtons(QtWidgets.QMessageBox.Retry | QtWidgets.QMessageBox.Cancel)
+        else:
+            msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        result = msgbox.exec_()
+        if result == QtWidgets.QMessageBox.Retry:
+            uartCom.connect_serial(uartCom.com_no)
 
-    def save_data(self):
-        pass
 
     def update_status(self):
         """메인 화면 페이지의 모니터링 요소 상태 업데이트"""
-        ui.temp_status.setText(str(config.air_temp[-1]))
+        ui.temp_status.setText(str(config.indoor_temp[-1]))
         ui.humid_status.setText(str(config.humid[-1]))
         ui.co2_status.setText(str(config.co2[-1]))
         ui.ph_status.setText(str(config.ph[-1]))
@@ -532,13 +549,13 @@ class Manager(QtCore.QThread):
 
     def update_graph(self):
         """그래프 페이지의 그래프 업데이트"""
-        global temp_view, main_view, co2_view
-        main_view.clear()
+        global indoor_temp_view, water_main_view, co2_view
+        water_main_view.clear()
         if ui.humid.isChecked():
-            main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
-        temp_view.clear()
+            water_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
+        indoor_temp_view.clear()
         if ui.indoor_temp.isChecked():
-            temp_view.addItem(pg.PlotCurveItem(config.air_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
+            indoor_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
         co2_view.clear()
         if ui.co2.isChecked():
             co2_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
@@ -576,10 +593,40 @@ def save_settings():
     print('saved settings')
 
 
-def update_views(temp_view, main_view, co2_view):
-    temp_view.setGeometry(main_view.sceneBoundingRect())
-    co2_view.setGeometry(main_view.sceneBoundingRect())
+def update_views(main_view, views):
+    for view in views:
+        view.setGeometry(main_view.sceneBoundingRect())
 
+
+def init_graph(plotWidget, graph_items, views):
+    font11 = QtGui.QFont('나눔스퀘어', 11)
+    layout = pg.GraphicsLayout()
+    plotWidget.setCentralWidget(layout)
+    plotItem = None
+
+    for i, item in enumerate(graph_items):
+        layout.addItem(item, row=2, col=i+1)
+
+    for view in views:
+        layout.scene().addItem(view)
+
+    # for i, item in enumerate(graph_items):
+    #     if not plotItem:
+    #         layout.addItem(item, row=2, col=i+1, rowspan=1, colspan=1)
+    #     else:
+    #         plotItem.layout.addItem(item, row=2, col=i+1)
+    #     if type(item) == pg.graphicsItems.PlotItem:
+    #         item.getAxis('left').tickFont = font11
+    #         item.getAxis('left').setWidth(30)
+    #         item.getAxis('bottom').setHeight(30)
+    #         item.getAxis('bottom').tickFont = font11
+    #         item.showGrid(True, True, 0.4)
+    #         plotItem = item
+    #     else:
+    #         item.tickFont = font11
+    # layout.scene().addItem(views[0])
+    # for view in views[1:]:
+    #     plotItem.scene().addItem(view)
 
 
 if __name__ == '__main__':
@@ -592,49 +639,35 @@ if __name__ == '__main__':
     ui = Ui_MainWindow()
     ui.setupUi(mainWindow)
 
-    font11 = QtGui.QFont('나눔스퀘어', 11)
+    # air 그래프 초기 설정
+    indoor_temp_axis = pg.AxisItem('left')
+    indoor_temp_axis.setWidth(30)
+    indoor_temp_axis.setHeight(285)
 
-    temp_axis = pg.AxisItem('left')
-    temp_axis.tickFont = font11
-    temp_view = pg.ViewBox()
-    temp_view.setLimits(yMin=0, yMax=100)
-
-    layout = pg.GraphicsLayout()
-    ui.plotWidget.setCentralWidget(layout)
-
-    layout.addItem(temp_axis, row=2, col=1, rowspan=1, colspan=1)
+    indoor_temp_view = pg.ViewBox()
+    indoor_temp_view.setLimits(yMin=0, yMax=100)
 
     plotItem = pg.PlotItem()
-    plotItem.getAxis('left').tickFont = font11
-    plotItem.getAxis('left').setWidth(30)
-    plotItem.getAxis('bottom').setHeight(30)
-    plotItem.getAxis('bottom').tickFont = font11
-    plotItem.showGrid(True, True, 0.4)
-    # main_view는 humid_view와 동일
-    main_view = plotItem.vb
-    main_view.setLimits(yMin=0, yMax=100)
-    layout.addItem(plotItem, row=2, col=2, rowspan=1, colspan=1)
+    # water_main_view는 humid_view와 동일
+    water_main_view = plotItem.vb
+    water_main_view.setLimits(yMin=0, yMax=100)
 
-    layout.scene().addItem(temp_view)
-    temp_axis.linkToView(temp_view)
-    temp_view.setXLink(main_view)
-    temp_axis.setWidth(30)
-    temp_axis.setHeight(300)
-
-    co2_view = pg.ViewBox()
-    ##
-    co2_view.setLimits(yMin=0, yMax=2000)
     co2_axis = pg.AxisItem('right')
-    co2_axis.tickFont = font11
-    plotItem.layout.addItem(co2_axis, 2, 3)
-    plotItem.scene().addItem(co2_view)
-    co2_axis.linkToView(co2_view)
-    co2_view.setXLink(plotItem)
     co2_axis.setWidth(40)
+    co2_view = pg.ViewBox()
+    co2_view.setLimits(yMin=0, yMax=2000)
 
-    main_view.sigResized.connect(lambda: update_views(temp_view, main_view, co2_view))
+    indoor_temp_axis.linkToView(indoor_temp_view)
+    indoor_temp_view.setXLink(water_main_view)
+    co2_axis.linkToView(co2_view)
+    #co2_view.setXLink(water_main_view)
+    co2_view.setXLink(plotItem)
 
-    temp_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
+    init_graph(ui.plotWidget, [indoor_temp_axis, plotItem, co2_axis], [indoor_temp_view, co2_view])
+
+    water_main_view.sigResized.connect(lambda: update_views(water_main_view, [indoor_temp_view, co2_view]))
+
+    indoor_temp_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
     co2_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
 
     load_settings()
@@ -647,9 +680,5 @@ if __name__ == '__main__':
     uartCom.connect_serial()
     mainWindow.show()
     app.exec_()
-    # if uartCom.t and uartCom.t.isAlive():
-    #     uartCom.uart.loop.call_soon_threadsafe(uartCom.uart.loop.stop)
-    if uartCom.thread and uartCom.thread.isAlive():
-        uartCom.uart.loop.call_soon_threadsafe(uartCom.uart.loop.stop)
     save_settings()
     sys.exit()
