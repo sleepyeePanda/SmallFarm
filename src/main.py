@@ -18,6 +18,7 @@ import db
 sys.path.append('../')
 from res.ui.Ui_design import Ui_MainWindow
 from res.preference import config
+import Remote
 
 __status__ = '2019.7.29'
 
@@ -48,6 +49,7 @@ class UartCom:
         self.com_no = None
         self.uart = None
         self.local = None
+        self.remote = None
         self.thread = None
 
     def get_com(self, waiting=0, prev_com_no=None):
@@ -116,11 +118,15 @@ class UartCom:
             try:
                 self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), self.com_no,
                                                                      baudrate=115200)
+                self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'COM2',
+                                                                      baudrate=115200)
                 print(self.com_no + ' connected')
             except Exception as e:
                 print(str(e))
 
+            self.loop.run_until_complete(self.remote)
             self.loop.run_until_complete(self.local)
+
             self.thread = Thread(target=self.run, args=(self.loop,))
             self.thread.setDaemon(True)
             self.thread.start()
@@ -278,7 +284,7 @@ class UartProtocol(asyncio.Protocol):
 class RcvParser(QtCore.QObject):
     updateStateSignal = QtCore.pyqtSignal()
     updateActuatorSignal = QtCore.pyqtSignal()
-    updateGraphSignal = QtCore.pyqtSignal(bool)
+    updateGraphSignal = QtCore.pyqtSignal(str)
     saveDataSignal = QtCore.pyqtSignal(str, list)
 
     def __init__(self):
@@ -288,17 +294,6 @@ class RcvParser(QtCore.QObject):
         self.updateActuatorSignal.connect(manager.update_actuator)
         self.updateGraphSignal.connect(manager.update_graph)
         self.saveDataSignal.connect(db.insert_data)
-
-        # 그래프 화면의 공기 그래프
-        ui.indoor_temp.pressed.connect(manager.update_graph)
-        ui.humid.pressed.connect(manager.update_graph)
-        ui.co2.pressed.connect(manager.update_graph)
-
-        # 그래프 화면의 물 그래프
-        ui.cs_temp.pressed.connect(manager.update_graph)
-        ui.ph.pressed.connect(manager.update_graph)
-        ui.Do.pressed.connect(manager.update_graph)
-        ui.tds.pressed.connect(manager.update_graph)
 
     def parsing(self, pkt):
         """수신 데이터 파싱"""
@@ -314,7 +309,8 @@ class RcvParser(QtCore.QObject):
     def rcv_air_status(self, info):
         """실내 온도, Humid, CO2 상태 파싱
            파싱 예외 발생 시 이전 상태 데이터 사용"""
-        config.last_sensing = datetime.datetime.now().strftime('%H : %M : %S')
+        sensing_datetime = datetime.datetime.now()
+        config.last_sensing = sensing_datetime.strftime('%H : %M : %S')
         try:
             indoor_temp = float(info[3:8])
         except Exception as e:
@@ -334,18 +330,19 @@ class RcvParser(QtCore.QObject):
         self.updateStateSignal.emit()
         # 그래프 업데이트
         if ui.page_stackedWidget.currentIndex() == 1:
-            self.updateGraphSignal.emit(True)
+            self.updateGraphSignal.emit('air')
         # 실내 온도, Humid, CO2 상태 데이터 추가
         for data, status in zip([config.indoor_temp, config.humid, config.co2], [indoor_temp, humid, co2]):
             data.append(status)
             data.pop(0)
         # DB에 실내 온도, Humid, CO2 상태 데이터 저장
-        # self.saveDataSignal.emit('AIR', [indoor_temp, humid, co2])
+        self.saveDataSignal.emit('AIR', [sensing_datetime, indoor_temp, humid, co2])
 
     def rcv_water_status(self, info):
         """양액 온도, DO, pH, TDS 상태 파싱
            파싱 예외 발생 시 이전 상태 데이터 사용"""
-        config.last_sensing = datetime.datetime.now().strftime('%H : %M : %S')
+        sensing_datetime = datetime.datetime.now()
+        config.last_sensing = sensing_datetime.strftime('%H : %M : %S')
         try:
             cs_temp = float(info[3:8])
         except Exception as e:
@@ -369,14 +366,14 @@ class RcvParser(QtCore.QObject):
         # 양액 온도, DO, pH, TDS 상태 업데이트
         self.updateStateSignal.emit()
         # 그래프 업데이트
-        # if ui.page_stackedWidget.currentIndex() == 1:
-        #     self.updateGraphSignal.emit(True)
+        if ui.page_stackedWidget.currentIndex() == 1:
+            self.updateGraphSignal.emit('water')
         # 양액 온도, DO, pH, TDS 상태 데이터 추가
         for data, status in zip([config.cs_temp, config.do, config.ph, config.tds], [cs_temp, do, ph, tds]):
             data.append(status)
             data.pop(0)
         # DB에 양액 온도, DO, pH, TDS 상태 데이터 저장
-        # self.saveDataSignal.emit('WATER', [cs_temp, do, ph, tds])
+        self.saveDataSignal.emit('WATER', [sensing_datetime, cs_temp, do, ph, tds])
 
     def rcv_led(self, info):
         """led 상태 데이터 파싱"""
@@ -470,7 +467,6 @@ class Manager(QtCore.QThread):
 
         # 페이지 변환
         ui.main_button.clicked.connect(lambda: ui.page_stackedWidget.setCurrentIndex(0))
-        ui.graph_button.clicked.connect(self.update_graph)
         ui.graph_button.clicked.connect(lambda: ui.page_stackedWidget.setCurrentIndex(1))
         ui.water_graph.clicked.connect(lambda: ui.graph_stackedWidget.setCurrentIndex(0))
         ui.air_graph.clicked.connect(lambda: ui.graph_stackedWidget.setCurrentIndex(1))
@@ -479,7 +475,9 @@ class Manager(QtCore.QThread):
 
         # 그래프 조작
         for button in [ui.indoor_temp, ui.humid, ui.co2, ui.air_day, ui.air_week, ui.air_month]:
-            button.clicked.connect(self.update_graph)
+            button.clicked.connect(partial(self.update_graph, 'air'))
+        for button in [ui.cs_temp, ui.Do, ui.ph, ui.tds, ui.water_day, ui.water_week, ui.water_month]:
+            button.clicked.connect(partial(self.update_graph, 'water'))
 
         # ui.sensor_freq_apply
         # ui.server_freq_apply
@@ -490,7 +488,7 @@ class Manager(QtCore.QThread):
 
         # initializing
         self.update_settings()
-        self.update_graph()
+        self.update_graph('air')
 
     def update_settings(self):
         """설정화면의 모든 설정 업데이트"""
@@ -534,7 +532,8 @@ class Manager(QtCore.QThread):
 
     def update_status(self):
         """메인 화면 페이지의 모니터링 요소 상태 업데이트"""
-        ui.temp_status.setText(str(config.indoor_temp[-1]))
+        ui.indoor_temp_status.setText(str(config.indoor_temp[-1]))
+        ui.cs_temp_status.setText(str(config.cs_temp[-1]))
         ui.humid_status.setText(str(config.humid[-1]))
         ui.co2_status.setText(str(config.co2[-1]))
         ui.ph_status.setText(str(config.ph[-1]))
@@ -547,18 +546,34 @@ class Manager(QtCore.QThread):
         ui.led_switch_image.setChecked(config.actuator_status['led'])
         ui.fan_switch_image.setChecked(config.actuator_status['fan'])
 
-    def update_graph(self):
+    def update_graph(self, graph_type):
         """그래프 페이지의 그래프 업데이트"""
-        global indoor_temp_view, air_main_view, co2_view
-        air_main_view.clear()
-        if ui.humid.isChecked():
-            air_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
-        indoor_temp_view.clear()
-        if ui.indoor_temp.isChecked():
-            indoor_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
-        co2_view.clear()
-        if ui.co2.isChecked():
-            co2_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
+        if graph_type == 'air':
+            global indoor_temp_view, air_main_view, co2_view
+            indoor_temp_view.clear()
+            if ui.indoor_temp.isChecked():
+                indoor_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
+            air_main_view.clear()
+            if ui.humid.isChecked():
+                air_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
+            co2_view.clear()
+            if ui.co2.isChecked():
+                co2_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
+        elif graph_type == 'water':
+            global cs_temp_view, water_main_view, ph_view, tds_view
+            cs_temp_view.clear()
+            if ui.cs_temp.isChecked():
+                cs_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
+            water_main_view.clear()
+            if ui.Do.isChecked():
+                water_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
+            ph_view.clear()
+            if ui.ph.isChecked():
+                ph_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
+            tds_view.clear()
+            if ui.tds.isChecked():
+                tds_view.addItem(pg.PlotCurveItem(config.tds, pen=pg.mkPen(color='#CE363B', width=3)))
+
 
     def change_settings(self, element=None):
         """설정 변경"""
@@ -599,7 +614,7 @@ def update_views(main_view, views):
 
 
 def init_graph(plotWidget, graph_items, views):
-    font11 = QtGui.QFont('나눔스퀘어', 11)
+    font11 = QtGui.QFont('나눔바른고딕', 10)
     layout = pg.GraphicsLayout()
     plotWidget.setCentralWidget(layout)
 
@@ -613,7 +628,7 @@ def init_graph(plotWidget, graph_items, views):
             item.showGrid(True, True, 0.4)
         else:
             item.tickFont = font11
-            item.setWidth(35)
+            item.setWidth(40)
             item.setHeight(290)
         layout.addItem(item, row=2, col=i + 1)
 
@@ -656,6 +671,35 @@ if __name__ == '__main__':
     init_graph(ui.air_plotWidget, [indoor_temp_axis, air_plotItem, co2_axis], [indoor_temp_view, co2_view])
 
     air_main_view.sigResized.connect(lambda: update_views(air_main_view, [indoor_temp_view, co2_view]))
+
+    # water 그래프 초기 설정
+    cs_temp_axis = pg.AxisItem('left')
+    cs_temp_view = pg.ViewBox()
+    cs_temp_view.setLimits(yMin=0, yMax=100)
+
+    water_plotItem = pg.PlotItem()
+    # water_main_view는 do_view와 동일
+    water_main_view = water_plotItem.vb
+    water_main_view.setLimits(yMin=0, yMax=100)
+
+    ph_axis = pg.AxisItem('right')
+    ph_view = pg.ViewBox()
+    ph_view.setLimits(yMin=0, yMax=2000)
+
+    tds_axis = pg.AxisItem('right')
+    tds_view = pg.ViewBox()
+    tds_view.setLimits(yMin=0, yMax=2000)
+
+    cs_temp_axis.linkToView(cs_temp_view)
+    cs_temp_view.setXLink(water_main_view)
+    ph_axis.linkToView(ph_view)
+    ph_view.setXLink(water_main_view)
+    tds_axis.linkToView(tds_view)
+    tds_view.setXLink(water_main_view)
+
+    init_graph(ui.water_plotWidget, [cs_temp_axis, water_plotItem, ph_axis, tds_axis], [cs_temp_view, ph_view, tds_view])
+
+    water_main_view.sigResized.connect(lambda: update_views(water_main_view, [cs_temp_view, ph_view, tds_view]))
 
     load_settings()
     manager = Manager()

@@ -9,7 +9,7 @@ queries = {'INSERT': {'AIR': 'INSERT INTO sensored_data(datetime, INDOOR_TEMP, H
 
 def insert_data(data_type, data):
     try:
-        connection = sqlite3.connect('sensor_data.db')
+        connection = sqlite3.connect('../res/sensor_data.db')
         connection.cursor().execute(queries['INSERT'][data_type], data)
         connection.commit()
     except Exception as e:
