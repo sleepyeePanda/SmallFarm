@@ -333,7 +333,7 @@ class RcvParser(QtCore.QObject):
         # 실내 온도, Humid, CO2 상태 업데이트
         self.updateStateSignal.emit()
         # 그래프 업데이트
-        if ui.stackedWidget.currentIndex() == 1:
+        if ui.page_stackedWidget.currentIndex() == 1:
             self.updateGraphSignal.emit(True)
         # 실내 온도, Humid, CO2 상태 데이터 추가
         for data, status in zip([config.indoor_temp, config.humid, config.co2], [indoor_temp, humid, co2]):
@@ -369,7 +369,7 @@ class RcvParser(QtCore.QObject):
         # 양액 온도, DO, pH, TDS 상태 업데이트
         self.updateStateSignal.emit()
         # 그래프 업데이트
-        # if ui.stackedWidget.currentIndex() == 1:
+        # if ui.page_stackedWidget.currentIndex() == 1:
         #     self.updateGraphSignal.emit(True)
         # 양액 온도, DO, pH, TDS 상태 데이터 추가
         for data, status in zip([config.cs_temp, config.do, config.ph, config.tds], [cs_temp, do, ph, tds]):
@@ -469,13 +469,13 @@ class Manager(QtCore.QThread):
         self.alertSignal.connect(self.alert)
 
         # 페이지 변환
-        ui.main_button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(0))
+        ui.main_button.clicked.connect(lambda: ui.page_stackedWidget.setCurrentIndex(0))
         ui.graph_button.clicked.connect(self.update_graph)
-        ui.graph_button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(1))
-        #ui.water.clicked.connect(lambda: ui.stackedWidget_2.setCurrentIndex(0))
-        #ui.air.clicked.connect(lambda: ui.stackedWidget_2.setCurrentIndex(1))
+        ui.graph_button.clicked.connect(lambda: ui.page_stackedWidget.setCurrentIndex(1))
+        ui.water_graph.clicked.connect(lambda: ui.graph_stackedWidget.setCurrentIndex(0))
+        ui.air_graph.clicked.connect(lambda: ui.graph_stackedWidget.setCurrentIndex(1))
         ui.settings_button.clicked.connect(self.update_settings)
-        ui.settings_button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(2))
+        ui.settings_button.clicked.connect(lambda: ui.page_stackedWidget.setCurrentIndex(2))
 
         # 그래프 조작
         for button in [ui.indoor_temp, ui.humid, ui.co2, ui.air_day, ui.air_week, ui.air_month]:
@@ -602,31 +602,14 @@ def init_graph(plotWidget, graph_items, views):
     font11 = QtGui.QFont('나눔스퀘어', 11)
     layout = pg.GraphicsLayout()
     plotWidget.setCentralWidget(layout)
-    plotItem = None
 
     for i, item in enumerate(graph_items):
         layout.addItem(item, row=2, col=i+1)
+        
 
     for view in views:
         layout.scene().addItem(view)
-
-    # for i, item in enumerate(graph_items):
-    #     if not plotItem:
-    #         layout.addItem(item, row=2, col=i+1, rowspan=1, colspan=1)
-    #     else:
-    #         plotItem.layout.addItem(item, row=2, col=i+1)
-    #     if type(item) == pg.graphicsItems.PlotItem:
-    #         item.getAxis('left').tickFont = font11
-    #         item.getAxis('left').setWidth(30)
-    #         item.getAxis('bottom').setHeight(30)
-    #         item.getAxis('bottom').tickFont = font11
-    #         item.showGrid(True, True, 0.4)
-    #         plotItem = item
-    #     else:
-    #         item.tickFont = font11
-    # layout.scene().addItem(views[0])
-    # for view in views[1:]:
-    #     plotItem.scene().addItem(view)
+        view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
 
 
 if __name__ == '__main__':
@@ -647,10 +630,10 @@ if __name__ == '__main__':
     indoor_temp_view = pg.ViewBox()
     indoor_temp_view.setLimits(yMin=0, yMax=100)
 
-    plotItem = pg.PlotItem()
-    # water_main_view는 humid_view와 동일
-    water_main_view = plotItem.vb
-    water_main_view.setLimits(yMin=0, yMax=100)
+    air_plotItem = pg.PlotItem()
+    # air_main_view는 humid_view와 동일
+    air_main_view = air_plotItem.vb
+    air_main_view.setLimits(yMin=0, yMax=100)
 
     co2_axis = pg.AxisItem('right')
     co2_axis.setWidth(40)
@@ -658,17 +641,51 @@ if __name__ == '__main__':
     co2_view.setLimits(yMin=0, yMax=2000)
 
     indoor_temp_axis.linkToView(indoor_temp_view)
-    indoor_temp_view.setXLink(water_main_view)
+    indoor_temp_view.setXLink(air_main_view)
     co2_axis.linkToView(co2_view)
-    #co2_view.setXLink(water_main_view)
-    co2_view.setXLink(plotItem)
+    #co2_view.setXLink(air_main_view)
+    co2_view.setXLink(air_plotItem)
 
-    init_graph(ui.plotWidget, [indoor_temp_axis, plotItem, co2_axis], [indoor_temp_view, co2_view])
+    init_graph(ui.air_plotWidget, [indoor_temp_axis, air_plotItem, co2_axis], [indoor_temp_view, co2_view])
 
-    water_main_view.sigResized.connect(lambda: update_views(water_main_view, [indoor_temp_view, co2_view]))
+    air_main_view.sigResized.connect(lambda: update_views(water_main_view, [indoor_temp_view, co2_view]))
 
-    indoor_temp_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
-    co2_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
+    # air_main_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
+
+    # water 그래프 초기 설정
+    cs_temp_axis = pg.AxisItem('left')
+    cs_temp_axis.setWidth(30)
+    cs_temp_axis.setHeight(285)
+
+    cs_temp_view = pg.ViewBox()
+    cs_temp_view.setLimits(yMin=0, yMax=100)
+
+    water_plotItem = pg.PlotItem()
+    # water_main_view는 humid_view와 동일
+    water_main_view = water_plotItem.vb
+    water_main_view.setLimits(yMin=0, yMax=100)
+
+    ph_axis = pg.AxisItem('right')
+    ph_axis.setWidth(40)
+    ph_view = pg.ViewBox()
+    ph_view.setLimits(yMin=0, yMax=2000)
+
+    tds_axis = pg.AxisItem('right')
+    tds_axis.setWidth(40)
+    tds_view = pg.ViewBox()
+    tds_view.setLimits(yMin=0, yMax=2000)
+
+    cs_temp_axis.linkToView(cs_temp_view)
+    cs_temp_view.setXLink(water_main_view)
+    ph_axis.linkToView(ph_view)
+    # co2_view.setXLink(water_main_view)
+    ph_view.setXLink(water_plotItem)
+    tds_axis.linkToView(tds_view)
+    tds_view.setXLink(water_plotItem)
+
+    init_graph(ui.water_plotWidget, [cs_temp_axis, water_plotItem, ph_axis, tds_axis], [cs_temp_view, ph_view, tds_view])
+
+    water_main_view.sigResized.connect(lambda: update_views(water_main_view, [cs_temp_view, ph_view, tds_view]))
 
     load_settings()
     manager = Manager()

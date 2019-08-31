@@ -37,7 +37,7 @@
    <string notr="true">background-image: url(:/img/resources/bg.jpg);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QStackedWidget" name="stackedWidget">
+   <widget class="QStackedWidget" name="page_stackedWidget">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -50,7 +50,7 @@
      <string notr="true">background:transparent</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page_5">
      <widget class="QFrame" name="frame_13">
@@ -765,7 +765,7 @@ background:transparent;</string>
      </widget>
     </widget>
     <widget class="QWidget" name="page">
-     <widget class="QStackedWidget" name="stackedWidget_2">
+     <widget class="QStackedWidget" name="graph_stackedWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -782,7 +782,7 @@ border-radius : 10px</string>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="page_3">
+      <widget class="QWidget" name="page_0">
        <widget class="QCheckBox" name="indoor_temp">
         <property name="geometry">
          <rect>
@@ -2275,21 +2275,22 @@ color:rgb(245,183,0);</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="PlotWidget" name="plotWidget">
+       <widget class="PlotWidget" name="air_plotWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>60</y>
-          <width>511</width>
-          <height>331</height>
+          <y>50</y>
+          <width>520</width>
+          <height>340</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background:white;
-border:transparent</string>
+         <string notr="true">background:rgb(40,40,40);
+border:1px solid rgb(121,191,53);
+border-radius : 7px</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="water_graph">
+       <widget class="QPushButton" name="air_graph">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -2321,7 +2322,7 @@ background-color:white;}
 </string>
         </property>
         <property name="text">
-         <string>Water</string>
+         <string>Air</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -2333,7 +2334,7 @@ background-color:white;}
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="water_month">
+       <widget class="QRadioButton" name="air_month">
         <property name="geometry">
          <rect>
           <x>460</x>
@@ -2356,7 +2357,7 @@ border:transparent;</string>
          <string>month</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="water_day">
+       <widget class="QRadioButton" name="air_day">
         <property name="geometry">
          <rect>
           <x>330</x>
@@ -2382,7 +2383,7 @@ border:transparent;</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="water_week">
+       <widget class="QRadioButton" name="air_week">
         <property name="geometry">
          <rect>
           <x>390</x>
@@ -2406,7 +2407,7 @@ border:transparent;</string>
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_4">
+      <widget class="QWidget" name="page_1">
        <widget class="QCheckBox" name="cs_temp">
         <property name="geometry">
          <rect>
@@ -4397,25 +4398,26 @@ color:rgb(8, 200, 206)</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="PlotWidget" name="plotWidget_2">
+       <widget class="PlotWidget" name="water_plotWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>499</width>
-          <height>295</height>
+          <width>520</width>
+          <height>340</height>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">background:white;
-border:transparent</string>
+         <string notr="true">background:rgb(40,40,40);
+border:1px solid rgb(121,191,53);
+border-radius : 7px</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="air_day">
+       <widget class="QRadioButton" name="water_day">
         <property name="geometry">
          <rect>
-          <x>325</x>
-          <y>350</y>
+          <x>340</x>
+          <y>20</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4438,11 +4440,11 @@ color:white</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="air_week">
+       <widget class="QRadioButton" name="water_week">
         <property name="geometry">
          <rect>
-          <x>375</x>
-          <y>350</y>
+          <x>390</x>
+          <y>20</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -4462,11 +4464,11 @@ color:white</string>
          <string>week</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="air_month">
+       <widget class="QRadioButton" name="water_month">
         <property name="geometry">
          <rect>
-          <x>440</x>
-          <y>350</y>
+          <x>455</x>
+          <y>20</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -4486,7 +4488,7 @@ color:white</string>
          <string>month</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="air_graph">
+       <widget class="QPushButton" name="water_graph">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -4518,7 +4520,7 @@ background-color:white;}
 </string>
         </property>
         <property name="text">
-         <string>Air</string>
+         <string>Water</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -7046,7 +7048,7 @@ color:white;
     <zorder>graph_button</zorder>
     <zorder>settings_button</zorder>
    </widget>
-   <zorder>stackedWidget</zorder>
+   <zorder>page_stackedWidget</zorder>
    <zorder>frame_25</zorder>
    <zorder>label_2</zorder>
    <zorder>label_7</zorder>

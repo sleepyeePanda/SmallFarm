@@ -2,21 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/graph.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SmallFarm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SmallFarm.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/preference/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/preference/saved_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/saved_settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/Ui_design.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/Ui_design.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/base_design.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/base_design.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/resources.qrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/circle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/green_o.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/new_bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/org_bg.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/red_o_big.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/solution_off.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources/solution_on.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,7 +26,7 @@
   <component name="ProjectId" id="1Q3a6noGcaGRImMNKDvi0VUtg8W" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SmallFarmTEST" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -102,7 +90,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566738325526</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="db and save comment">
+      <created>1567249967333</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1567249967333</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -129,6 +124,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="serial port refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="serial port refactoring" />
+    <MESSAGE value="db and save comment" />
+    <option name="LAST_COMMIT_MESSAGE" value="db and save comment" />
   </component>
 </project>
