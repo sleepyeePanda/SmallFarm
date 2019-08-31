@@ -549,10 +549,10 @@ class Manager(QtCore.QThread):
 
     def update_graph(self):
         """그래프 페이지의 그래프 업데이트"""
-        global indoor_temp_view, water_main_view, co2_view
-        water_main_view.clear()
+        global indoor_temp_view, air_main_view, co2_view
+        air_main_view.clear()
         if ui.humid.isChecked():
-            water_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
+            air_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
         indoor_temp_view.clear()
         if ui.indoor_temp.isChecked():
             indoor_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
@@ -604,8 +604,18 @@ def init_graph(plotWidget, graph_items, views):
     plotWidget.setCentralWidget(layout)
 
     for i, item in enumerate(graph_items):
-        layout.addItem(item, row=2, col=i+1)
-        
+        print(type(item))
+        if type(item) == pg.PlotItem:
+            item.getAxis('left').tickFont = font11
+            item.getAxis('left').setWidth(35)
+            item.getAxis('bottom').setHeight(30)
+            item.getAxis('bottom').tickFont = font11
+            item.showGrid(True, True, 0.4)
+        else:
+            item.tickFont = font11
+            item.setWidth(35)
+            item.setHeight(290)
+        layout.addItem(item, row=2, col=i + 1)
 
     for view in views:
         layout.scene().addItem(view)
@@ -624,8 +634,6 @@ if __name__ == '__main__':
 
     # air 그래프 초기 설정
     indoor_temp_axis = pg.AxisItem('left')
-    indoor_temp_axis.setWidth(30)
-    indoor_temp_axis.setHeight(285)
 
     indoor_temp_view = pg.ViewBox()
     indoor_temp_view.setLimits(yMin=0, yMax=100)
@@ -636,56 +644,18 @@ if __name__ == '__main__':
     air_main_view.setLimits(yMin=0, yMax=100)
 
     co2_axis = pg.AxisItem('right')
-    co2_axis.setWidth(40)
     co2_view = pg.ViewBox()
     co2_view.setLimits(yMin=0, yMax=2000)
 
     indoor_temp_axis.linkToView(indoor_temp_view)
     indoor_temp_view.setXLink(air_main_view)
     co2_axis.linkToView(co2_view)
-    #co2_view.setXLink(air_main_view)
-    co2_view.setXLink(air_plotItem)
+    #co2_view.setXLink(air_plotItem)
+    co2_view.setXLink(air_main_view)
 
     init_graph(ui.air_plotWidget, [indoor_temp_axis, air_plotItem, co2_axis], [indoor_temp_view, co2_view])
 
-    air_main_view.sigResized.connect(lambda: update_views(water_main_view, [indoor_temp_view, co2_view]))
-
-    # air_main_view.enableAutoRange(axis=pg.ViewBox.XYAxes, enable=True)
-
-    # water 그래프 초기 설정
-    cs_temp_axis = pg.AxisItem('left')
-    cs_temp_axis.setWidth(30)
-    cs_temp_axis.setHeight(285)
-
-    cs_temp_view = pg.ViewBox()
-    cs_temp_view.setLimits(yMin=0, yMax=100)
-
-    water_plotItem = pg.PlotItem()
-    # water_main_view는 humid_view와 동일
-    water_main_view = water_plotItem.vb
-    water_main_view.setLimits(yMin=0, yMax=100)
-
-    ph_axis = pg.AxisItem('right')
-    ph_axis.setWidth(40)
-    ph_view = pg.ViewBox()
-    ph_view.setLimits(yMin=0, yMax=2000)
-
-    tds_axis = pg.AxisItem('right')
-    tds_axis.setWidth(40)
-    tds_view = pg.ViewBox()
-    tds_view.setLimits(yMin=0, yMax=2000)
-
-    cs_temp_axis.linkToView(cs_temp_view)
-    cs_temp_view.setXLink(water_main_view)
-    ph_axis.linkToView(ph_view)
-    # co2_view.setXLink(water_main_view)
-    ph_view.setXLink(water_plotItem)
-    tds_axis.linkToView(tds_view)
-    tds_view.setXLink(water_plotItem)
-
-    init_graph(ui.water_plotWidget, [cs_temp_axis, water_plotItem, ph_axis, tds_axis], [cs_temp_view, ph_view, tds_view])
-
-    water_main_view.sigResized.connect(lambda: update_views(water_main_view, [cs_temp_view, ph_view, tds_view]))
+    air_main_view.sigResized.connect(lambda: update_views(air_main_view, [indoor_temp_view, co2_view]))
 
     load_settings()
     manager = Manager()
