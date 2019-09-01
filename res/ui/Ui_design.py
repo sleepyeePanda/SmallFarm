@@ -1855,15 +1855,15 @@ class Ui_MainWindow(object):
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
-        self.connect_2 = QtWidgets.QPushButton(self.frame_9)
-        self.connect_2.setGeometry(QtCore.QRect(170, 52, 31, 27))
+        self.refresh = QtWidgets.QPushButton(self.frame_9)
+        self.refresh.setGeometry(QtCore.QRect(170, 52, 31, 27))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.connect_2.setFont(font)
-        self.connect_2.setStyleSheet("QPushButton{border-radius : 13px;\n"
+        self.refresh.setFont(font)
+        self.refresh.setStyleSheet("QPushButton{border-radius : 13px;\n"
 "border : 2px solid rgb(121,191,53);\n"
 "color:rgb(121,191,53);\n"
 "background-color:white;\n"
@@ -1876,9 +1876,9 @@ class Ui_MainWindow(object):
 "image:url(:/img/resources/white_arrow.png)\n"
 "}\n"
 "")
-        self.connect_2.setText("")
-        self.connect_2.setCheckable(True)
-        self.connect_2.setObjectName("connect_2")
+        self.refresh.setText("")
+        self.refresh.setCheckable(True)
+        self.refresh.setObjectName("refresh")
         self.frame_11 = QtWidgets.QFrame(self.page_2)
         self.frame_11.setGeometry(QtCore.QRect(275, 0, 265, 191))
         self.frame_11.setStyleSheet("background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 161));\n"

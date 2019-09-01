@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/preference/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/Ui_design.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/Ui_design.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/base_design.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/base_design.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/ui/resources_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/resources_rc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Remote.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Remote.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -120,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567263604636</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix issue which graph freq radioButton didn't work properly">
+      <created>1567320361832</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1567320361832</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -151,6 +160,23 @@
     <MESSAGE value="save now - lines are not located well" />
     <MESSAGE value="complete air graph" />
     <MESSAGE value="complete before fetch data for graph" />
-    <option name="LAST_COMMIT_MESSAGE" value="complete before fetch data for graph" />
+    <MESSAGE value="fix issue which graph freq radioButton didn't work properly" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix issue which graph freq radioButton didn't work properly" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/main.py</url>
+          <line>75</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/main.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

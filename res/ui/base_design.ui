@@ -4971,7 +4971,7 @@ width: 17px;
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QPushButton" name="connect_2">
+      <widget class="QPushButton" name="refresh">
        <property name="geometry">
         <rect>
          <x>170</x>

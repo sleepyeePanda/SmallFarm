@@ -19,7 +19,7 @@ import db
 sys.path.append('../')
 from res.ui.Ui_design import Ui_MainWindow
 from res.preference import config
-import Remote
+# import Remote
 
 __status__ = '2019.7.29'
 
@@ -27,8 +27,9 @@ __status__ = '2019.7.29'
 class UartCom:
     def __init__(self):
 
-        ui.connect.clicked.connect(self.connect_serial)
+        ui.connect.clicked.connect(lambda: self.connect_serial(str(ui.coms.currentText())))
         ui.disconnect.clicked.connect(partial(self.disconnect_serial, True))
+        ui.refresh.pressed.connect(partial(self.get_com, 0, None))
 
         # 작동기
         ui.led_switch.pressed.connect(partial(self.control_led_power, init=False))
@@ -47,25 +48,30 @@ class UartCom:
         self.cs_freq_timer.timeout.connect(partial(self.control_cs_power, order=True))
         ui.cs_auto.toggled.connect(lambda x: self.control_cs_power(order=True) if x else self.stop_timers('cs'))
 
-        self.com_no = None
+        self.com = None
         self.uart = None
         self.local = None
-        self.remote = None
+        # self.remote = None
         self.thread = None
 
-    def get_com(self, waiting=0, prev_com_no=None):
+    def get_com(self, waiting=0, prev_com=None):
         """사용 가능한 시리얼 포트 화면에 추가"""
         time.sleep(waiting)
         connectable_ports = []
         connectable_ports.extend(self.serial_ports())
         print(connectable_ports)
-        if prev_com_no:
-            manager.alertSignal.emit("Please press 'Retry' after checking out connection.", True)
-        elif not connectable_ports:
+        ui.coms.clear()
+        if not prev_com and not connectable_ports:
             manager.alertSignal.emit('Please try again after checking out connection.', False)
+            return None
+        elif prev_com in connectable_ports:
+            ui.coms.addItem(prev_com)
+            ui.coms.setCurrentIndex(0)
+            return prev_com
         else:
             for comport in connectable_ports:
                 ui.coms.addItem(comport)
+            return ui.coms.currentText()
 
     def serial_ports(self):
         """사용 가능한 시리얼 포트 검색"""
@@ -99,33 +105,31 @@ class UartCom:
         print('Closed Uart Thread!')
 
     def handle_exception(self, loop, context):
+        # self.remote.transport.loop.stop()
+        # self.remote.transport.close()
+        # self.remote.transport = None
         self.disconnect_serial(by_user=False)
+        manager.alertSignal.emit(f"Please press 'Retry' after checking out connection if you want to reconnect {uartCom.com}.", True)
         print(str(context))
 
-    def connect_serial(self, prev_com_no=None):
+    def connect_serial(self, connectable_com):
         """시리얼 연결 설정"""
-        if prev_com_no:
-            print('prev is', prev_com_no, type(prev_com_no))
-            ui.coms.addItem(prev_com_no)
-            ui.coms.setCurrentIndex(0)
-            self.com_no = prev_com_no
-        else:
-            self.com_no = str(ui.coms.currentText())
-        print(self.com_no)
-        if self.com_no:
+        if connectable_com:
+            self.com = connectable_com
+            print(self.com)
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
             self.loop.set_exception_handler(self.handle_exception)
             try:
-                self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), self.com_no,
+                self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), self.com,
                                                                      baudrate=115200)
-                self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'COM2',
-                                                                      baudrate=115200)
-                print(self.com_no + ' connected')
+                # self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'COM2',
+                #                                                       baudrate=115200)
+                print(self.com + ' connected')
             except Exception as e:
                 print(str(e))
 
-            self.loop.run_until_complete(self.remote)
+            # self.loop.run_until_complete(self.remote)
             self.loop.run_until_complete(self.local)
 
             self.thread = Thread(target=self.run, args=(self.loop,))
@@ -138,7 +142,12 @@ class UartCom:
             ui.connect.setText('connected')
             ui.connect.setChecked(True)
             ui.connect.setEnabled(False)
+            ui.disconnect.setEnabled(True)
+            ui.refresh.setEnabled(False)
             ui.coms.setEnabled(False)
+        else:
+            ui.connect.setChecked(False)
+
 
     def stop_timers(self, actuator):
         if actuator == 'fan':
@@ -168,15 +177,19 @@ class UartCom:
             self.uart.loop.stop()
             self.uart.close()
             self.uart = None
-        ui.coms.clear()
+        # if self.remote is not None:
+            # self.remote.loop.stop()
+        #    self.remote.close()
+        #    self.remote = None
+        # ui.coms.clear()
         ui.connect.setChecked(False)
         ui.connect.setText('connect')
         ui.connect.setEnabled(True)
+        ui.disconnect.setEnabled(False)
+        ui.refresh.setEnabled(True)
         ui.coms.setEnabled(True)
-        ui.disconnect.setChecked(False)
-        prev_com_no = None if by_user else self.com_no
-        print('prev is',prev_com_no)
-        self.get_com(0.3, prev_com_no=prev_com_no)
+        if by_user:
+            self.get_com(waiting=0.3)
 
     def initialize_actuator(self):
         """작동기 최초 상태 읽기"""
@@ -196,10 +209,10 @@ class UartCom:
                 return True
             except Exception as e:
                 print(str(e))
-                manager.alertSignal.emit('통신 연결 상태를 확인해 주십시오.', False)
+                manager.alertSignal.emit('Please try again after checking out connection.', False)
                 return False
         else:
-            manager.alertSignal.emit('통신 연결 상태를 확인해 주십시오.', False)
+            manager.alertSignal.emit('Please try again after checking out connection.', False)
             print('Not Connected')
             return False
 
@@ -508,7 +521,6 @@ class Manager(QtCore.QThread):
         """설정화면의 모든 설정 업데이트"""
         # 센서 설정
         ui.sensor_freq.setValue(config.settings['sensor']['freq'])
-        # test
         ui.sensor_freq_unit.setCurrentText(config.settings['sensor']['unit'])
 
         # 서버 설정
@@ -541,7 +553,9 @@ class Manager(QtCore.QThread):
             msgbox.setStandardButtons(QtWidgets.QMessageBox.Ok)
         result = msgbox.exec_()
         if result == QtWidgets.QMessageBox.Retry:
-            uartCom.connect_serial(uartCom.com_no)
+            uartCom.connect_serial(uartCom.get_com(prev_com=uartCom.com))
+        elif result == QtWidgets.QMessageBox.Cancel:
+            ui.coms.clear()
 
 
     def update_status(self):
@@ -718,8 +732,7 @@ if __name__ == '__main__':
     timeUpdater = TimeUpdater()
     valueUpdater = ValueUpdater()
     # MainWindow.showFullScreen()
-    uartCom.get_com()
-    uartCom.connect_serial()
+    uartCom.connect_serial(uartCom.get_com())
     mainWindow.show()
     app.exec_()
     save_settings()

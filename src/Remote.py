@@ -19,7 +19,7 @@ class UartProtocol(asyncio.Protocol):
 
     def connection_lost(self, exc):
         print('COM2 port closed')
-        self.transport.loop.stop()
+        # self.transport.loop.stop()
 
 
 class RcvParser(QtCore.QObject):
