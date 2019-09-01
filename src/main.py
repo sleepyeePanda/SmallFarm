@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import glob
+import itertools
 import json
 from functools import partial
 import serial
@@ -104,7 +105,7 @@ class UartCom:
     def connect_serial(self, prev_com_no=None):
         """시리얼 연결 설정"""
         if prev_com_no:
-            print('prev is',prev_com_no, type(prev_com_no))
+            print('prev is', prev_com_no, type(prev_com_no))
             ui.coms.addItem(prev_com_no)
             ui.coms.setCurrentIndex(0)
             self.com_no = prev_com_no
@@ -284,7 +285,7 @@ class UartProtocol(asyncio.Protocol):
 class RcvParser(QtCore.QObject):
     updateStateSignal = QtCore.pyqtSignal()
     updateActuatorSignal = QtCore.pyqtSignal()
-    updateGraphSignal = QtCore.pyqtSignal(str)
+    updateGraphSignal = QtCore.pyqtSignal(str, str)
     saveDataSignal = QtCore.pyqtSignal(str, list)
 
     def __init__(self):
@@ -329,8 +330,8 @@ class RcvParser(QtCore.QObject):
         # 실내 온도, Humid, CO2 상태 업데이트
         self.updateStateSignal.emit()
         # 그래프 업데이트
-        if ui.page_stackedWidget.currentIndex() == 1:
-            self.updateGraphSignal.emit('air')
+        if ui.page_stackedWidget.currentIndex() == 1 and ui.air_day.isChecked():
+            self.updateGraphSignal.emit('air', '')
         # 실내 온도, Humid, CO2 상태 데이터 추가
         for data, status in zip([config.indoor_temp, config.humid, config.co2], [indoor_temp, humid, co2]):
             data.append(status)
@@ -366,8 +367,8 @@ class RcvParser(QtCore.QObject):
         # 양액 온도, DO, pH, TDS 상태 업데이트
         self.updateStateSignal.emit()
         # 그래프 업데이트
-        if ui.page_stackedWidget.currentIndex() == 1:
-            self.updateGraphSignal.emit('water')
+        if ui.page_stackedWidget.currentIndex() == 1 and ui.water_day.isChecked():
+            self.updateGraphSignal.emit('water', '')
         # 양액 온도, DO, pH, TDS 상태 데이터 추가
         for data, status in zip([config.cs_temp, config.do, config.ph, config.tds], [cs_temp, do, ph, tds]):
             data.append(status)
@@ -474,10 +475,23 @@ class Manager(QtCore.QThread):
         ui.settings_button.clicked.connect(lambda: ui.page_stackedWidget.setCurrentIndex(2))
 
         # 그래프 조작
-        for button in [ui.indoor_temp, ui.humid, ui.co2, ui.air_day, ui.air_week, ui.air_month]:
-            button.clicked.connect(partial(self.update_graph, 'air'))
-        for button in [ui.cs_temp, ui.Do, ui.ph, ui.tds, ui.water_day, ui.water_week, ui.water_month]:
-            button.clicked.connect(partial(self.update_graph, 'water'))
+        graph_freqs = ['', 'by_week', 'by_month']
+        self.air_checkBoxes = [ui.indoor_temp, ui.humid, ui.co2]
+        self.water_checkBoxes = [ui.cs_temp, ui.Do, ui.ph, ui.tds]
+        air_radioButtons = [ui.air_day, ui.air_week, ui.air_month]
+        water_radioButtons = [ui.water_day, ui.water_week, ui.water_month]
+
+        for checkBox in self.air_checkBoxes:
+            checkBox.clicked.connect(lambda: self.update_graph('air', list(itertools.compress(graph_freqs,
+                                                                [rb.isChecked() for rb in air_radioButtons]))[0]))
+        for checkBox in self.water_checkBoxes:
+            checkBox.clicked.connect(lambda: self.update_graph('water', list(itertools.compress(graph_freqs,
+                                                                [rb.isChecked() for rb in water_radioButtons]))[0]))
+
+        for radioButton, graph_freq in zip(air_radioButtons, graph_freqs):
+            radioButton.clicked.connect(partial(self.update_graph, 'air', graph_freq))
+        for radioButton, graph_freq in zip(water_radioButtons, graph_freqs):
+            radioButton.clicked.connect(partial(self.update_graph, 'water', graph_freq))
 
         # ui.sensor_freq_apply
         # ui.server_freq_apply
@@ -488,7 +502,7 @@ class Manager(QtCore.QThread):
 
         # initializing
         self.update_settings()
-        self.update_graph('air')
+        self.update_graph('air', '')
 
     def update_settings(self):
         """설정화면의 모든 설정 업데이트"""
@@ -546,34 +560,30 @@ class Manager(QtCore.QThread):
         ui.led_switch_image.setChecked(config.actuator_status['led'])
         ui.fan_switch_image.setChecked(config.actuator_status['fan'])
 
-    def update_graph(self, graph_type):
+    def update_graph(self, graph_type, graph_freq=''):
         """그래프 페이지의 그래프 업데이트"""
         if graph_type == 'air':
-            global indoor_temp_view, air_main_view, co2_view
-            indoor_temp_view.clear()
-            if ui.indoor_temp.isChecked():
-                indoor_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
-            air_main_view.clear()
-            if ui.humid.isChecked():
-                air_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
-            co2_view.clear()
-            if ui.co2.isChecked():
-                co2_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
+            global air_graph_views
+            views = air_graph_views
+            checkBoxes = self.air_checkBoxes
+            if graph_freq:
+                datas = db.fetch_data('AIR', graph_freq)
+            else:
+                datas = [config.indoor_temp, config.humid, config.co2]
+            colors = ['#08C8CE', '#83E609', '#F5B700']
         elif graph_type == 'water':
-            global cs_temp_view, water_main_view, ph_view, tds_view
-            cs_temp_view.clear()
-            if ui.cs_temp.isChecked():
-                cs_temp_view.addItem(pg.PlotCurveItem(config.indoor_temp, pen=pg.mkPen(color='#08C8CE', width=3)))
-            water_main_view.clear()
-            if ui.Do.isChecked():
-                water_main_view.addItem(pg.PlotCurveItem(config.humid, pen=pg.mkPen(color='#83E609', width=3)))
-            ph_view.clear()
-            if ui.ph.isChecked():
-                ph_view.addItem(pg.PlotCurveItem(config.co2, pen=pg.mkPen(color='#F5B700', width=3)))
-            tds_view.clear()
-            if ui.tds.isChecked():
-                tds_view.addItem(pg.PlotCurveItem(config.tds, pen=pg.mkPen(color='#CE363B', width=3)))
-
+            global water_graph_views
+            views = water_graph_views
+            checkBoxes = self.water_checkBoxes
+            if graph_freq:
+                datas = db.fetch_data('WATER', graph_freq)
+            else:
+                datas = [config.cs_temp, config.do, config.ph, config.tds]
+            colors = ['#08C8CE', '#83E609', '#F5B700', '#CE363B']
+        for view, checkbox, data, c in zip(views, checkBoxes, datas, colors):
+            view.clear()
+            if checkbox.isChecked():
+                view.addItem(pg.PlotCurveItem(data, pen=pg.mkPen(color=c, width=3)))
 
     def change_settings(self, element=None):
         """설정 변경"""
@@ -619,7 +629,6 @@ def init_graph(plotWidget, graph_items, views):
     plotWidget.setCentralWidget(layout)
 
     for i, item in enumerate(graph_items):
-        print(type(item))
         if type(item) == pg.PlotItem:
             item.getAxis('left').tickFont = font11
             item.getAxis('left').setWidth(35)
@@ -669,7 +678,6 @@ if __name__ == '__main__':
     co2_view.setXLink(air_main_view)
 
     init_graph(ui.air_plotWidget, [indoor_temp_axis, air_plotItem, co2_axis], [indoor_temp_view, co2_view])
-
     air_main_view.sigResized.connect(lambda: update_views(air_main_view, [indoor_temp_view, co2_view]))
 
     # water 그래프 초기 설정
@@ -700,6 +708,9 @@ if __name__ == '__main__':
     init_graph(ui.water_plotWidget, [cs_temp_axis, water_plotItem, ph_axis, tds_axis], [cs_temp_view, ph_view, tds_view])
 
     water_main_view.sigResized.connect(lambda: update_views(water_main_view, [cs_temp_view, ph_view, tds_view]))
+
+    air_graph_views = [indoor_temp_view, air_main_view, co2_view]
+    water_graph_views = [cs_temp_view, water_main_view, ph_view, tds_view]
 
     load_settings()
     manager = Manager()
