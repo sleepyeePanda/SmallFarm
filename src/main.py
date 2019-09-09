@@ -411,7 +411,7 @@ class RcvParser(QtCore.QObject):
         """정전 여부 데이터 파싱"""
         try:
             if info[4] == 'O':
-                manager.alertSignal.emit('정전이 발생하였습니다.', False)
+                manager.alertSignal.emit('Black out occurred!', False)
         except Exception as e:
             print(str(e))
 
@@ -459,7 +459,7 @@ class ValueUpdater(QtCore.QThread):
     def check_freq_min_time(self):
         freq = calculate_millisecond()
         if freq < 10000:
-            manager.alertSignal.emit('센서 최소 측정 주기는 10초입니다.', False)
+            manager.alertSignal.emit('The minimum sensing freq is 10 second.', False)
             ui.sensor_freq.setValue(10)
             ui.sensor_freq_unit.setCurrentIndex(0)
         manager.change_settings('sensor')
@@ -556,7 +556,6 @@ class Manager(QtCore.QThread):
             uartCom.connect_serial(uartCom.get_com(prev_com=uartCom.com))
         elif result == QtWidgets.QMessageBox.Cancel:
             ui.coms.clear()
-
 
     def update_status(self):
         """메인 화면 페이지의 모니터링 요소 상태 업데이트"""
