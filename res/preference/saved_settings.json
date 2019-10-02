@@ -1,13 +1,14 @@
 {
     "element": {
+        "PID": "SF190000",
         "sensor": {
             "freq": 10,
             "unit": "S"
         },
         "server": {
-            "ip": "0.0.0.0",
-            "port": "0",
-            "freq": 5,
+            "ip": "127.0.0.1",
+            "port": "8888",
+            "freq": 10,
             "unit": "S"
         },
         "cs": {

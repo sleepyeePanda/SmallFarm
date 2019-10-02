@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="">
+    <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="fix serial device connecting issue">
+      <change afterPath="$PROJECT_DIR$/src/client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/testing/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/testing/fstring.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/testing/test_server.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/preference/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/preference/saved_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/saved_settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sensor_data.db" beforeDir="false" afterPath="$PROJECT_DIR$/res/sensor_data.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/Ui_design.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/Ui_design.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/base_design.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/base_design.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/ui/resources_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/resources_rc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Remote.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Remote.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graph.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,13 +35,15 @@
   <component name="ProjectId" id="1Q3a6noGcaGRImMNKDvi0VUtg8W" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main.py" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/SmallFarm (1)/SmallFarm/src/main.py" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.gutterIcons" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/src/main.py" />
+    <property name="two.files.diff.last.used.file" value="$USER_HOME$/Desktop/SmallFarm (1)/SmallFarm/src/main.py" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dsm2017\PycharmProjects\SmallFarm\src\testing" />
       <recent name="C:\Users\user\PycharmProjects\SmallFarm\src" />
       <recent name="D:\SmallFarm\res\preference" />
       <recent name="D:\SmallFarm\res\ui" />
@@ -53,7 +62,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
+    <configuration name="fstring" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SmallFarm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/testing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/testing/fstring.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python">
       <module name="SmallFarm" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -75,6 +105,77 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="tcp_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SmallFarm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\dsm2017\PycharmProjects\SmallFarm\src\testing\test_server.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SmallFarm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_server" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SmallFarm" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/testing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/testing/test_server.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test_server" />
+        <item itemvalue="Python.tcp_test" />
+        <item itemvalue="Python.fstring" />
+        <item itemvalue="Python.test" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -129,17 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1567320361832</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fix serial device connecting issue">
+      <created>1567334370849</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1567334370849</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -161,20 +260,36 @@
     <MESSAGE value="complete air graph" />
     <MESSAGE value="complete before fetch data for graph" />
     <MESSAGE value="fix issue which graph freq radioButton didn't work properly" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix issue which graph freq radioButton didn't work properly" />
+    <MESSAGE value="fix serial device connecting issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix serial device connecting issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/main.py</url>
-          <line>75</line>
+          <line>82</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/main.py</url>
-          <line>114</line>
-          <option name="timeStamp" value="2" />
+          <line>122</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/main.py</url>
+          <line>514</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/client.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/client.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

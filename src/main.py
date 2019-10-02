@@ -15,10 +15,14 @@ import pyqtgraph as pg
 import serial_asyncio
 import sys
 
+
 import db
+import client
+
 sys.path.append('../')
 from res.ui.Ui_design import Ui_MainWindow
 from res.preference import config
+# TODO remote 임포트 삭제하기
 # import Remote
 
 __status__ = '2019.7.29'
@@ -35,6 +39,7 @@ class UartCom:
         ui.led_switch.pressed.connect(partial(self.control_led_power, init=False))
         ui.fan_switch.pressed.connect(partial(self.control_fan_power, init=False))
         ui.cs_switch.toggled.connect(lambda x: self.control_cs_power(toggled=x))
+        ui.cs_switch.toggled.connect(lambda x: config.actuator_status.update({'cs': x}))
         ui.blackout_check_button.pressed.connect(partial(self.check_blackout))
 
         # fan 자동 제어
@@ -50,7 +55,9 @@ class UartCom:
 
         self.com = None
         self.uart = None
+        self.loop = None
         self.local = None
+        # TODO remote COM 삭제하기
         # self.remote = None
         self.thread = None
 
@@ -105,6 +112,7 @@ class UartCom:
         print('Closed Uart Thread!')
 
     def handle_exception(self, loop, context):
+        # TODO Remote COM 삭제하기
         # self.remote.transport.loop.stop()
         # self.remote.transport.close()
         # self.remote.transport = None
@@ -123,12 +131,14 @@ class UartCom:
             try:
                 self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), self.com,
                                                                      baudrate=115200)
+                # TODO remote COM 삭제하기
                 # self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'COM2',
-                #                                                       baudrate=115200)
+                #                                                      baudrate=115200)
                 print(self.com + ' connected')
             except Exception as e:
                 print(str(e))
 
+            # TODO remote COM 삭제하기
             # self.loop.run_until_complete(self.remote)
             self.loop.run_until_complete(self.local)
 
@@ -137,7 +147,7 @@ class UartCom:
             self.thread.start()
 
             self.initialize_actuator()
-            valueUpdater.sensor_timer.start(calculate_millisecond())
+            valueUpdater.sensor_timer.start(calculate_millisecond(ui.sensor_freq.value(), ui.sensor_freq_unit.currentText()))
 
             ui.connect.setText('connected')
             ui.connect.setChecked(True)
@@ -147,7 +157,6 @@ class UartCom:
             ui.coms.setEnabled(False)
         else:
             ui.connect.setChecked(False)
-
 
     def stop_timers(self, actuator):
         if actuator == 'fan':
@@ -177,10 +186,11 @@ class UartCom:
             self.uart.loop.stop()
             self.uart.close()
             self.uart = None
+        # TODO remote COM 삭제하기
         # if self.remote is not None:
-            # self.remote.loop.stop()
-        #    self.remote.close()
-        #    self.remote = None
+        #     self.remote.loop.stop()
+        #     self.remote.close()
+        #     self.remote = None
         # ui.coms.clear()
         ui.connect.setChecked(False)
         ui.connect.setText('connect')
@@ -420,6 +430,7 @@ class RcvParser(QtCore.QObject):
                          'W': self.rcv_water_status,
                          'L': self.rcv_led,
                          'F': self.rcv_fan,
+                         # TODO 정전 프로토콜 추가하기
                          '': self.rcv_blackout_check}
 
 
@@ -450,26 +461,25 @@ class TimeUpdater(QtCore.QThread):
 class ValueUpdater(QtCore.QThread):
     def __init__(self):
         super().__init__()
-        ui.sensor_freq_apply.pressed.connect(self.check_freq_min_time)
+        ui.sensor_freq_apply.pressed.connect(self.check_sensor_freq_min_time)
         self.sensor_timer = QtCore.QTimer()
         self.sensor_timer.timeout.connect(uartCom.check_air_status)
         self.sensor_timer.timeout.connect(uartCom.check_water_status)
         self.start()
 
-    def check_freq_min_time(self):
-        freq = calculate_millisecond()
+    def check_sensor_freq_min_time(self):
+        freq = calculate_millisecond(ui.sensor_freq.value(), ui.sensor_freq_unit.currentText())
         if freq < 10000:
-            manager.alertSignal.emit('The minimum sensing freq is 10 second.', False)
             ui.sensor_freq.setValue(10)
             ui.sensor_freq_unit.setCurrentIndex(0)
+            manager.alertSignal.emit('The minimum sensing freq is 10 second.', False)
         manager.change_settings('sensor')
         self.sensor_timer.start(freq)
 
 
-def calculate_millisecond():
+def calculate_millisecond(freq, unit):
     units = {'S': 1000, 'M': 60000, 'H': 3600000}
-    millisecond = ui.sensor_freq.value()*units[ui.sensor_freq_unit.currentText()]
-    return millisecond
+    return freq * units[unit]
 
 
 class Manager(QtCore.QThread):
@@ -506,14 +516,15 @@ class Manager(QtCore.QThread):
         for radioButton, graph_freq in zip(water_radioButtons, graph_freqs):
             radioButton.clicked.connect(partial(self.update_graph, 'water', graph_freq))
 
-        # ui.sensor_freq_apply
-        # ui.server_freq_apply
-        ui.server_save.pressed.connect(partial(self.change_settings, 'server'))
-        ui.cs_save.pressed.connect(partial(self.change_settings, 'cs'))
-        ui.fan_save.pressed.connect(partial(self.change_settings, 'fan'))
-        ui.led_save.pressed.connect(partial(self.change_settings, 'led'))
+        ui.id_apply.pressed.connect(lambda: config.settings.update({'PID': ui.id.text()}))
+        ui.sensor_freq_apply.pressed.connect(partial(self.change_settings, 'sensor'))
+        ui.server_freq_apply.pressed.connect(partial(self.change_settings, 'server'))
+        ui.cs_apply.pressed.connect(partial(self.change_settings, 'cs'))
+        ui.fan_apply.pressed.connect(partial(self.change_settings, 'fan'))
+        ui.led_apply.pressed.connect(partial(self.change_settings, 'led'))
 
         # initializing
+        ui.id.setText(config.settings['PID'])
         self.update_settings()
         self.update_graph('air', '')
 
@@ -601,7 +612,7 @@ class Manager(QtCore.QThread):
     def change_settings(self, element=None):
         """설정 변경"""
         if element == 'sensor':
-            config.settings['sensor'].update({'freq': ui.sensor_freq.value(), 'unit':ui.sensor_freq_unit.currentText()})
+            config.settings['sensor'].update({'freq': ui.sensor_freq.value(), 'unit': ui.sensor_freq_unit.currentText()})
         elif element == 'server':
             config.settings['server'].update({'ip': '.'.join([ui.ip1.text(), ui.ip2.text(), ui.ip3.text(), ui.ip4.text()]),
                                               'port': ui.port.text(),
@@ -732,6 +743,8 @@ if __name__ == '__main__':
     valueUpdater = ValueUpdater()
     # MainWindow.showFullScreen()
     uartCom.connect_serial(uartCom.get_com())
+    TCPclient = client.TCPClient(ui)
+    TCPclient.start()
     mainWindow.show()
     app.exec_()
     save_settings()

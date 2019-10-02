@@ -1737,7 +1737,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -1759,7 +1758,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -1801,7 +1799,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -1954,7 +1951,7 @@ class Ui_MainWindow(object):
         self.ip4.setAlignment(QtCore.Qt.AlignCenter)
         self.ip4.setObjectName("ip4")
         self.port = QtWidgets.QLineEdit(self.frame_11)
-        self.port.setGeometry(QtCore.QRect(100, 90, 41, 31))
+        self.port.setGeometry(QtCore.QRect(100, 90, 91, 31))
         font = QtGui.QFont()
         font.setFamily("나눔고딕")
         font.setPointSize(11)
@@ -1966,20 +1963,6 @@ class Ui_MainWindow(object):
         self.port.setMaxLength(5)
         self.port.setAlignment(QtCore.Qt.AlignCenter)
         self.port.setObjectName("port")
-        self.serv_unit = QtWidgets.QComboBox(self.frame_11)
-        self.serv_unit.setGeometry(QtCore.QRect(310, 60, 51, 34))
-        font = QtGui.QFont()
-        font.setFamily("맑은 고딕")
-        font.setPointSize(11)
-        self.serv_unit.setFont(font)
-        self.serv_unit.setStyleSheet("background-color:white;\n"
-"border:1px solid grey;\n"
-"selection-background-color: rgb(121, 191, 53);\n"
-"border-radius:5px")
-        self.serv_unit.setObjectName("serv_unit")
-        self.serv_unit.addItem("")
-        self.serv_unit.addItem("")
-        self.serv_unit.addItem("")
         self.server_freq_apply = QtWidgets.QPushButton(self.frame_11)
         self.server_freq_apply.setGeometry(QtCore.QRect(165, 145, 71, 31))
         font = QtGui.QFont()
@@ -1994,7 +1977,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -2023,7 +2005,7 @@ class Ui_MainWindow(object):
         self.server_freq.setProperty("value", 5)
         self.server_freq.setObjectName("server_freq")
         self.label_39 = QtWidgets.QLabel(self.frame_11)
-        self.label_39.setGeometry(QtCore.QRect(20, 50, 31, 31))
+        self.label_39.setGeometry(QtCore.QRect(20, 50, 21, 31))
         font = QtGui.QFont()
         font.setFamily("나눔스퀘어 Bold")
         font.setPointSize(13)
@@ -2036,7 +2018,7 @@ class Ui_MainWindow(object):
         self.label_39.setAlignment(QtCore.Qt.AlignCenter)
         self.label_39.setObjectName("label_39")
         self.label_46 = QtWidgets.QLabel(self.frame_11)
-        self.label_46.setGeometry(QtCore.QRect(19, 90, 61, 31))
+        self.label_46.setGeometry(QtCore.QRect(20, 90, 51, 31))
         font = QtGui.QFont()
         font.setFamily("나눔스퀘어 Bold")
         font.setPointSize(13)
@@ -2061,28 +2043,6 @@ class Ui_MainWindow(object):
 "border:transparent")
         self.label_53.setAlignment(QtCore.Qt.AlignCenter)
         self.label_53.setObjectName("label_53")
-        self.server_save = QtWidgets.QPushButton(self.frame_11)
-        self.server_save.setGeometry(QtCore.QRect(165, 90, 71, 31))
-        font = QtGui.QFont()
-        font.setFamily("나눔바른고딕")
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
-        self.server_save.setFont(font)
-        self.server_save.setStyleSheet("QPushButton{border-radius : 15px;\n"
-"border : 2px solid rgb(121,191,53);\n"
-"color:rgb(121,191,53);\n"
-"background-color:white;}\n"
-"QPushButton:pressed{\n"
-"border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
-"border:transparent;\n"
-"background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
-"color:white;\n"
-"}\n"
-"")
-        self.server_save.setCheckable(True)
-        self.server_save.setObjectName("server_save")
         self.server_freq_unit = QtWidgets.QComboBox(self.frame_11)
         self.server_freq_unit.setGeometry(QtCore.QRect(123, 145, 35, 31))
         font = QtGui.QFont()
@@ -2177,28 +2137,27 @@ class Ui_MainWindow(object):
         self.cs_act_min.setMaximum(999)
         self.cs_act_min.setProperty("value", 999)
         self.cs_act_min.setObjectName("cs_act_min")
-        self.cs_save = QtWidgets.QPushButton(self.frame_2)
-        self.cs_save.setGeometry(QtCore.QRect(47, 140, 71, 31))
+        self.cs_apply = QtWidgets.QPushButton(self.frame_2)
+        self.cs_apply.setGeometry(QtCore.QRect(47, 140, 71, 31))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.cs_save.setFont(font)
-        self.cs_save.setStyleSheet("QPushButton{border-radius : 15px;\n"
+        self.cs_apply.setFont(font)
+        self.cs_apply.setStyleSheet("QPushButton{border-radius : 15px;\n"
 "border : 2px solid rgb(121,191,53);\n"
 "color:rgb(121,191,53);\n"
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
 "}\n"
 "")
-        self.cs_save.setCheckable(True)
-        self.cs_save.setObjectName("cs_save")
+        self.cs_apply.setCheckable(True)
+        self.cs_apply.setObjectName("cs_apply")
         self.label_49 = QtWidgets.QLabel(self.frame_2)
         self.label_49.setGeometry(QtCore.QRect(20, 100, 41, 31))
         font = QtGui.QFont()
@@ -2317,28 +2276,27 @@ class Ui_MainWindow(object):
         self.fan_act_min.setMaximum(999)
         self.fan_act_min.setProperty("value", 999)
         self.fan_act_min.setObjectName("fan_act_min")
-        self.fan_save = QtWidgets.QPushButton(self.frame_3)
-        self.fan_save.setGeometry(QtCore.QRect(47, 140, 71, 31))
+        self.fan_apply = QtWidgets.QPushButton(self.frame_3)
+        self.fan_apply.setGeometry(QtCore.QRect(47, 140, 71, 31))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.fan_save.setFont(font)
-        self.fan_save.setStyleSheet("QPushButton{border-radius : 15px;\n"
+        self.fan_apply.setFont(font)
+        self.fan_apply.setStyleSheet("QPushButton{border-radius : 15px;\n"
 "border : 2px solid rgb(121,191,53);\n"
 "color:rgb(121,191,53);\n"
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
 "}\n"
 "")
-        self.fan_save.setCheckable(True)
-        self.fan_save.setObjectName("fan_save")
+        self.fan_apply.setCheckable(True)
+        self.fan_apply.setObjectName("fan_apply")
         self.label_54 = QtWidgets.QLabel(self.frame_3)
         self.label_54.setGeometry(QtCore.QRect(20, 100, 41, 31))
         font = QtGui.QFont()
@@ -2412,28 +2370,27 @@ class Ui_MainWindow(object):
 "color:rgb(60,60,60)")
         self.label_59.setAlignment(QtCore.Qt.AlignCenter)
         self.label_59.setObjectName("label_59")
-        self.led_save = QtWidgets.QPushButton(self.frame_4)
-        self.led_save.setGeometry(QtCore.QRect(47, 140, 71, 31))
+        self.led_apply = QtWidgets.QPushButton(self.frame_4)
+        self.led_apply.setGeometry(QtCore.QRect(47, 140, 71, 31))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.led_save.setFont(font)
-        self.led_save.setStyleSheet("QPushButton{border-radius : 15px;\n"
+        self.led_apply.setFont(font)
+        self.led_apply.setStyleSheet("QPushButton{border-radius : 15px;\n"
 "border : 2px solid rgb(121,191,53);\n"
 "color:rgb(121,191,53);\n"
 "background-color:white;}\n"
 "QPushButton:pressed{\n"
 "border-radius : 15px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
 "}\n"
 "")
-        self.led_save.setCheckable(True)
-        self.led_save.setObjectName("led_save")
+        self.led_apply.setCheckable(True)
+        self.led_apply.setObjectName("led_apply")
         self.label_60 = QtWidgets.QLabel(self.frame_4)
         self.label_60.setGeometry(QtCore.QRect(10, 105, 41, 31))
         font = QtGui.QFont()
@@ -2463,7 +2420,7 @@ class Ui_MainWindow(object):
         self.led_off_at = QtWidgets.QTimeEdit(self.frame_4)
         self.led_off_at.setGeometry(QtCore.QRect(50, 100, 101, 31))
         font = QtGui.QFont()
-        font.setFamily("나눔스퀘어")
+        font.setFamily("나눔고딕")
         font.setPointSize(11)
         self.led_off_at.setFont(font)
         self.led_off_at.setStyleSheet("QTimeEdit{\n"
@@ -2482,7 +2439,7 @@ class Ui_MainWindow(object):
         self.led_on_at = QtWidgets.QTimeEdit(self.frame_4)
         self.led_on_at.setGeometry(QtCore.QRect(50, 55, 101, 31))
         font = QtGui.QFont()
-        font.setFamily("나눔스퀘어")
+        font.setFamily("나눔고딕")
         font.setPointSize(11)
         font.setBold(False)
         font.setWeight(50)
@@ -2505,7 +2462,7 @@ class Ui_MainWindow(object):
         self.frame_11.raise_()
         self.page_stackedWidget.addWidget(self.page_2)
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(10, 60, 231, 101))
+        self.frame.setGeometry(QtCore.QRect(10, 60, 231, 91))
         self.frame.setStyleSheet("background:transparent")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -2611,7 +2568,7 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.frame_25 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_25.setGeometry(QtCore.QRect(20, 160, 211, 301))
+        self.frame_25.setGeometry(QtCore.QRect(20, 200, 211, 261))
         self.frame_25.setStyleSheet("background:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 255, 255, 0), stop:1 rgba(255, 255, 255, 161));\n"
 "border : 2px solid rgb(121,191,53);\n"
 "border-radius : 10px")
@@ -2619,7 +2576,7 @@ class Ui_MainWindow(object):
         self.frame_25.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_25.setObjectName("frame_25")
         self.led_auto = QtWidgets.QCheckBox(self.frame_25)
-        self.led_auto.setGeometry(QtCore.QRect(30, 145, 61, 16))
+        self.led_auto.setGeometry(QtCore.QRect(27, 123, 61, 16))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(13)
@@ -2631,7 +2588,7 @@ class Ui_MainWindow(object):
 "border:transparent;")
         self.led_auto.setObjectName("led_auto")
         self.fan_switch_image = QtWidgets.QPushButton(self.frame_25)
-        self.fan_switch_image.setGeometry(QtCore.QRect(110, 50, 85, 85))
+        self.fan_switch_image.setGeometry(QtCore.QRect(113, 37, 81, 81))
         self.fan_switch_image.setStyleSheet("QPushButton{background:transparent;\n"
 "border:transparent;\n"
 "border-radius:42px;\n"
@@ -2645,7 +2602,7 @@ class Ui_MainWindow(object):
         self.fan_switch_image.setCheckable(True)
         self.fan_switch_image.setObjectName("fan_switch_image")
         self.led_switch_image = QtWidgets.QPushButton(self.frame_25)
-        self.led_switch_image.setGeometry(QtCore.QRect(15, 50, 85, 85))
+        self.led_switch_image.setGeometry(QtCore.QRect(17, 37, 81, 81))
         self.led_switch_image.setStyleSheet("QPushButton{\n"
 "image: url(:/img/resources/light_off.png);\n"
 "background:transparent;\n"
@@ -2661,7 +2618,7 @@ class Ui_MainWindow(object):
         self.led_switch_image.setCheckable(True)
         self.led_switch_image.setObjectName("led_switch_image")
         self.cs_switch = QtWidgets.QPushButton(self.frame_25)
-        self.cs_switch.setGeometry(QtCore.QRect(15, 175, 85, 85))
+        self.cs_switch.setGeometry(QtCore.QRect(17, 147, 81, 81))
         self.cs_switch.setStyleSheet("QPushButton{background:transparent;\n"
 "border:transparent;\n"
 "border-radius:42px;\n"
@@ -2675,7 +2632,7 @@ class Ui_MainWindow(object):
         self.cs_switch.setCheckable(True)
         self.cs_switch.setObjectName("cs_switch")
         self.fan_auto = QtWidgets.QCheckBox(self.frame_25)
-        self.fan_auto.setGeometry(QtCore.QRect(120, 145, 61, 16))
+        self.fan_auto.setGeometry(QtCore.QRect(123, 123, 61, 16))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(13)
@@ -2687,7 +2644,7 @@ class Ui_MainWindow(object):
 "border:transparent;")
         self.fan_auto.setObjectName("fan_auto")
         self.cs_auto = QtWidgets.QCheckBox(self.frame_25)
-        self.cs_auto.setGeometry(QtCore.QRect(30, 270, 61, 16))
+        self.cs_auto.setGeometry(QtCore.QRect(27, 233, 61, 16))
         font = QtGui.QFont()
         font.setFamily("나눔바른고딕")
         font.setPointSize(13)
@@ -2699,7 +2656,7 @@ class Ui_MainWindow(object):
 "border:transparent;")
         self.cs_auto.setObjectName("cs_auto")
         self.blackout_check_button = QtWidgets.QPushButton(self.frame_25)
-        self.blackout_check_button.setGeometry(QtCore.QRect(110, 175, 85, 85))
+        self.blackout_check_button.setGeometry(QtCore.QRect(113, 147, 81, 81))
         self.blackout_check_button.setStyleSheet("QPushButton{background:transparent;\n"
 "border:transparent;\n"
 "border-radius:42px;\n"
@@ -2713,7 +2670,7 @@ class Ui_MainWindow(object):
         self.blackout_check_button.setCheckable(False)
         self.blackout_check_button.setObjectName("blackout_check_button")
         self.label_36 = QtWidgets.QLabel(self.frame_25)
-        self.label_36.setGeometry(QtCore.QRect(50, 10, 121, 31))
+        self.label_36.setGeometry(QtCore.QRect(50, 5, 121, 31))
         font = QtGui.QFont()
         font.setFamily("나눔스퀘어 Bold")
         font.setPointSize(14)
@@ -2726,14 +2683,14 @@ class Ui_MainWindow(object):
         self.label_36.setAlignment(QtCore.Qt.AlignCenter)
         self.label_36.setObjectName("label_36")
         self.led_switch = QtWidgets.QPushButton(self.frame_25)
-        self.led_switch.setGeometry(QtCore.QRect(12, 47, 91, 91))
+        self.led_switch.setGeometry(QtCore.QRect(17, 35, 81, 81))
         self.led_switch.setStyleSheet("background:transparent;\n"
 "border:transparent;\n"
 "border-radius:40px;")
         self.led_switch.setText("")
         self.led_switch.setObjectName("led_switch")
         self.fan_switch = QtWidgets.QPushButton(self.frame_25)
-        self.fan_switch.setGeometry(QtCore.QRect(107, 47, 91, 91))
+        self.fan_switch.setGeometry(QtCore.QRect(113, 37, 81, 81))
         self.fan_switch.setStyleSheet("background:transparent;\n"
 "border:transparent;\n"
 "border-radius:40px;")
@@ -2775,7 +2732,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:checked {\n"
 "border-radius : 17px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -2799,7 +2755,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:checked {\n"
 "border-radius : 17px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -2823,7 +2778,6 @@ class Ui_MainWindow(object):
 "background-color:white;}\n"
 "QPushButton:checked {\n"
 "border-radius : 17px;\n"
-"border : 2px solid rgb(130,255,75);\n"
 "border:transparent;\n"
 "background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
 "color:white;\n"
@@ -2843,6 +2797,47 @@ class Ui_MainWindow(object):
         self.main_button.raise_()
         self.graph_button.raise_()
         self.settings_button.raise_()
+        self.frame_5 = QtWidgets.QFrame(self.centralwidget)
+        self.frame_5.setGeometry(QtCore.QRect(10, 150, 231, 51))
+        self.frame_5.setStyleSheet("background:transparent")
+        self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_5.setObjectName("frame_5")
+        self.id = QtWidgets.QLineEdit(self.frame_5)
+        self.id.setGeometry(QtCore.QRect(10, 10, 131, 31))
+        font = QtGui.QFont()
+        font.setFamily("나눔고딕")
+        font.setPointSize(11)
+        self.id.setFont(font)
+        self.id.setStyleSheet("background-color:white;\n"
+"border:1px solid grey;\n"
+"border-radius:5px")
+        self.id.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
+        self.id.setText("")
+        self.id.setMaxLength(8)
+        self.id.setAlignment(QtCore.Qt.AlignCenter)
+        self.id.setObjectName("id")
+        self.id_apply = QtWidgets.QPushButton(self.frame_5)
+        self.id_apply.setGeometry(QtCore.QRect(150, 10, 71, 31))
+        font = QtGui.QFont()
+        font.setFamily("나눔바른고딕")
+        font.setPointSize(11)
+        font.setBold(True)
+        font.setWeight(75)
+        self.id_apply.setFont(font)
+        self.id_apply.setStyleSheet("QPushButton{border-radius : 15px;\n"
+"border : 2px solid rgb(121,191,53);\n"
+"color:rgb(121,191,53);\n"
+"background-color:white;}\n"
+"QPushButton:pressed{\n"
+"border-radius : 15px;\n"
+"border:transparent;\n"
+"background-color:qlineargradient(spread:pad, x1:0.15, y1:0.15, x2:1, y2:1, stop:0 rgba(177, 220, 61, 255), stop:1 rgba(41, 191, 61, 247));\n"
+"color:white;\n"
+"}\n"
+"")
+        self.id_apply.setCheckable(True)
+        self.id_apply.setObjectName("id_apply")
         self.page_stackedWidget.raise_()
         self.frame_25.raise_()
         self.label_2.raise_()
@@ -2850,11 +2845,12 @@ class Ui_MainWindow(object):
         self.label.raise_()
         self.frame.raise_()
         self.groupBox.raise_()
+        self.frame_5.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         self.page_stackedWidget.setCurrentIndex(0)
-        self.graph_stackedWidget.setCurrentIndex(0)
+        self.graph_stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -2900,32 +2896,28 @@ class Ui_MainWindow(object):
         self.sensor_freq_unit.setItemText(1, _translate("MainWindow", "M"))
         self.sensor_freq_unit.setItemText(2, _translate("MainWindow", "H"))
         self.label_37.setText(_translate("MainWindow", "Server"))
-        self.serv_unit.setItemText(0, _translate("MainWindow", "초"))
-        self.serv_unit.setItemText(1, _translate("MainWindow", "분"))
-        self.serv_unit.setItemText(2, _translate("MainWindow", "시"))
         self.server_freq_apply.setText(_translate("MainWindow", "apply"))
         self.label_39.setText(_translate("MainWindow", "IP"))
         self.label_46.setText(_translate("MainWindow", "PORT"))
         self.label_53.setText(_translate("MainWindow", "Freq"))
-        self.server_save.setText(_translate("MainWindow", "save"))
         self.server_freq_unit.setCurrentText(_translate("MainWindow", "S"))
         self.server_freq_unit.setItemText(0, _translate("MainWindow", "S"))
         self.server_freq_unit.setItemText(1, _translate("MainWindow", "M"))
         self.server_freq_unit.setItemText(2, _translate("MainWindow", "H"))
         self.label_43.setText(_translate("MainWindow", "Culture Solution"))
-        self.cs_save.setText(_translate("MainWindow", "save"))
+        self.cs_apply.setText(_translate("MainWindow", "apply"))
         self.label_49.setText(_translate("MainWindow", "Act"))
         self.label_44.setText(_translate("MainWindow", "hour"))
         self.label_55.setText(_translate("MainWindow", "min"))
         self.label_50.setText(_translate("MainWindow", "Freq"))
         self.label_51.setText(_translate("MainWindow", "Fan"))
-        self.fan_save.setText(_translate("MainWindow", "save"))
+        self.fan_apply.setText(_translate("MainWindow", "apply"))
         self.label_54.setText(_translate("MainWindow", "Act"))
         self.label_56.setText(_translate("MainWindow", "hour"))
         self.label_57.setText(_translate("MainWindow", "min"))
         self.label_58.setText(_translate("MainWindow", "Freq"))
         self.label_59.setText(_translate("MainWindow", "LED"))
-        self.led_save.setText(_translate("MainWindow", "save"))
+        self.led_apply.setText(_translate("MainWindow", "apply"))
         self.label_60.setText(_translate("MainWindow", "Off"))
         self.label_63.setText(_translate("MainWindow", "On"))
         self.cur_date.setText(_translate("MainWindow", "2018 / 12 / 31"))
@@ -2943,6 +2935,8 @@ class Ui_MainWindow(object):
         self.main_button.setText(_translate("MainWindow", "Main"))
         self.graph_button.setText(_translate("MainWindow", "Graph"))
         self.settings_button.setText(_translate("MainWindow", "Setting"))
+        self.id.setPlaceholderText(_translate("MainWindow", "smart farm ID"))
+        self.id_apply.setText(_translate("MainWindow", "apply"))
 from pyqtgraph import PlotWidget
 from . import resources_rc
 

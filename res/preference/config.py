@@ -6,7 +6,9 @@ ph = [0 for i in range(10)]
 do = [0 for i in range(10)]
 tds = [0 for i in range(10)]
 
-actuator_status = {'led': False, 'fan': False}
+# TODO cs와 pump 네이밍 통일하기
+actuator_status = {'led': False, 'fan': False, 'cs': False}
 settings = {}
 
 last_sensing = '00 : 00 : 00'
+
