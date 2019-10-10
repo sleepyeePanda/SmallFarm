@@ -11,4 +11,5 @@ actuator_status = {'led': False, 'fan': False, 'cs': False}
 settings = {}
 
 last_sensing = '00 : 00 : 00'
+is_sensing = False
 

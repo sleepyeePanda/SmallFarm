@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="fix serial device connecting issue">
-      <change afterPath="$PROJECT_DIR$/src/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/testing/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/testing/fstring.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/testing/test_server.py" afterDir="false" />
+    <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/preference/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/preference/saved_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/saved_settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/sensor_data.db" beforeDir="false" afterPath="$PROJECT_DIR$/res/sensor_data.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/Ui_design.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/Ui_design.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/base_design.ui" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/base_design.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/ui/resources_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/ui/resources_rc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graph.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -237,7 +229,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567334370849</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="update">
+      <created>1569980116410</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1569980116410</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -261,7 +260,8 @@
     <MESSAGE value="complete before fetch data for graph" />
     <MESSAGE value="fix issue which graph freq radioButton didn't work properly" />
     <MESSAGE value="fix serial device connecting issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix serial device connecting issue" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -278,18 +278,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/main.py</url>
-          <line>514</line>
+          <line>517</line>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/client.py</url>
-          <line>41</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/client.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

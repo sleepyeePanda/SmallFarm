@@ -177,6 +177,7 @@ class UartCom:
         config.actuator_status.update({'led': False, 'fan': False})
         for actuator in [ui.led_switch_image, ui.fan_switch_image, ui.cs_switch]:
             actuator.setChecked(False)
+        config.is_sensing = False
 
     def disconnect_serial(self, by_user=True):
         """시리얼 연결 해제"""
@@ -359,6 +360,7 @@ class RcvParser(QtCore.QObject):
         for data, status in zip([config.indoor_temp, config.humid, config.co2], [indoor_temp, humid, co2]):
             data.append(status)
             data.pop(0)
+        config.is_sensing = True
         # DB에 실내 온도, Humid, CO2 상태 데이터 저장
         self.saveDataSignal.emit('AIR', [sensing_datetime, indoor_temp, humid, co2])
 
@@ -396,6 +398,7 @@ class RcvParser(QtCore.QObject):
         for data, status in zip([config.cs_temp, config.do, config.ph, config.tds], [cs_temp, do, ph, tds]):
             data.append(status)
             data.pop(0)
+        config.is_sensing = True
         # DB에 양액 온도, DO, pH, TDS 상태 데이터 저장
         self.saveDataSignal.emit('WATER', [sensing_datetime, cs_temp, do, ph, tds])
 
@@ -616,7 +619,7 @@ class Manager(QtCore.QThread):
         elif element == 'server':
             config.settings['server'].update({'ip': '.'.join([ui.ip1.text(), ui.ip2.text(), ui.ip3.text(), ui.ip4.text()]),
                                               'port': ui.port.text(),
-                                              'freq': ui.sensor_freq.value(), 'unit': ui.sensor_freq_unit.currentText()})
+                                              'freq': ui.server_freq.value(), 'unit': ui.server_freq_unit.currentText()})
         elif element == 'led':
             config.settings['led'].update({'on': ui.led_on_at.time().toString('HH:mm'),
                                            'off': ui.led_off_at.time().toString('HH:mm')})
