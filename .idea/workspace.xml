@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9c609940-1a69-404b-aee8-1def0fa713b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/preference/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/preference/saved_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/res/preference/saved_settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sensor_data.db" beforeDir="false" afterPath="$PROJECT_DIR$/res/sensor_data.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Remote.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Remote.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
@@ -236,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569980116410</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update">
+      <created>1570703348763</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1570703348763</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -278,7 +285,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/main.py</url>
-          <line>517</line>
+          <line>519</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>

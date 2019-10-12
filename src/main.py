@@ -131,9 +131,11 @@ class UartCom:
             try:
                 self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), self.com,
                                                                      baudrate=115200)
+                # self.local = serial_asyncio.create_serial_connection(self.loop, lambda: UartProtocol(self), "COM3",
+                #                                                      baudrate=115200)
                 # TODO remote COM 삭제하기
                 # self.remote = serial_asyncio.create_serial_connection(self.loop, lambda: Remote.UartProtocol(), 'COM2',
-                #                                                      baudrate=115200)
+                #                                                     baudrate=115200)
                 print(self.com + ' connected')
             except Exception as e:
                 print(str(e))
@@ -239,7 +241,7 @@ class UartCom:
 
     def control_led_power(self, init=False, order=None):
         """led 작동 제어"""
-        msgs = {True: '\x02L010555R555G555B555\x03\x0A\x0D', False: '\x02L011555R555G555B555\x03\x0A\x0D'}
+        msgs = {True: '\x02L01W000R555G555B555\x03\x0A\x0D', False: '\x02L0W1111R555G555B555\x03\x0A\x0D'}
         if order:
             self.send_msg(msgs[not order])
         else:
@@ -405,7 +407,7 @@ class RcvParser(QtCore.QObject):
     def rcv_led(self, info):
         """led 상태 데이터 파싱"""
         try:
-            config.actuator_status['led'] = True if info[3] == '1' else False
+            config.actuator_status['led'] = False if info[4] == '0' else True
         except Exception as e:
             print(str(e))
         # 작동기 상태 업데이트
@@ -584,6 +586,7 @@ class Manager(QtCore.QThread):
 
     def update_actuator(self):
         """제어 요소 상태 업데이트"""
+        print(config.actuator_status['led'])
         ui.led_switch_image.setChecked(config.actuator_status['led'])
         ui.fan_switch_image.setChecked(config.actuator_status['fan'])
 
@@ -746,8 +749,8 @@ if __name__ == '__main__':
     valueUpdater = ValueUpdater()
     # MainWindow.showFullScreen()
     uartCom.connect_serial(uartCom.get_com())
-    TCPclient = client.TCPClient(ui)
-    TCPclient.start()
+    # TCPclient = client.TCPClient(ui)
+    # TCPclient.start()
     mainWindow.show()
     app.exec_()
     save_settings()

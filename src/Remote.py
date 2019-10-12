@@ -31,7 +31,7 @@ class RcvParser(QtCore.QObject):
 
     def parsing(self, pkt):
         self.info = pkt.strip('\x02\x03\n\r')
-        print('remote: data parsed', self.info)
+        # print('remote: data parsed', self.info)
         cmd = self.info[0]
         try:
             func = self.protocol.get(cmd)

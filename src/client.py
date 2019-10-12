@@ -22,9 +22,9 @@ class TCPClient(threading.Thread):
 
         self.loop = asyncio.get_event_loop()
         self.loop.set_exception_handler(self.handle_exception)
-        self.server_timer = QTimer()
-        self.server_timer.timeout.connect(lambda: self.loop.create_task(self.send_msg(self.create_msg(type='sensor'))))
-        self.server_timer.start(calculate_millisecond(config.settings['server']['freq'], config.settings['server']['unit']))
+        # self.server_timer = QTimer()
+        # self.server_timer.timeout.connect(lambda: self.loop.create_task(self.send_msg(self.create_msg(type='sensor'))))
+        # self.server_timer.start(calculate_millisecond(config.settings['server']['freq'], config.settings['server']['unit']))
 
     def handle_exception(self, context):
         print(str(context))
